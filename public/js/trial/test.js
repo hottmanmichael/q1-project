@@ -1,18 +1,20 @@
 'use strict';
 
+
 (function() {
 
    var user = new User();
-   if (typeof localStorage.groupie === 'undefined') {
-      localStorage.groupie = JSON.stringify(user);
-   } else {
-      
-   }
-   console.log("User: ", user);
+   // console.log("user authenticated: ", user.authenticate());
 
-   //setup request
-      //see Ajax.js file for requests
-   // var spotifyRequest = new Ajax().request;
+   //if a user does not yet exist, create one
+   if (!user.authenticate()) {
+      user.create();
+   }
+
+   //set up window user object for use throughout
+   user.establish(user.fetchLocal('model'));
+
+   console.log("user: ", user);
 
    //handle user input for artist search
    var artistSearch = document.getElementById('main-artist-search');
@@ -54,23 +56,14 @@
       /*
          FIXME: handle 400 error!
       */
-      new newAjax('GET', fullPath, function(err, res) {
+      new Ajax('GET', fullPath, function(err, res) {
          console.log("err: ", err);
          if (!err) {
             console.log("res: ", res);
-               // removeCurrentDigestArtists();
-               // showArtists(res);
+               removeCurrentDigestArtists();
+               showArtists(res);
          } else handleResponseError(err);
       }, null);
-
-      // spotifyRequest.onload = function() {
-      //    /*
-      //       FIXME: handle 400 error!
-      //    */
-      //    // console.log("this.api: ", this.apiData);
-      //    removeCurrentDigestArtists();
-      //    showArtists(this.apiData);
-      // };
    }
 
    function showArtists(data) {
