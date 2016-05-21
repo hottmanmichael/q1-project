@@ -1,0 +1,85 @@
+//Imports
+//Fonts
+	@import url(https://fonts.googleapis.com/css?family=Lato:300,400|Ubuntu:300);
+
+	@import "mquery";
+
+//Additional Stylesheets
+   @import "main";
+	@import "dashboard/dash";
+	@import "dashboard/contentwheel";
+
+
+	* {
+		box-sizing: border-box;
+	}
+
+	body {
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+	   margin: 0;
+		font-family: 'Ubuntu', sans-serif;
+		font-weight: 300;
+		color: white;
+		font-size: 16px;
+	}
+	#app {
+		background: rgba(0, 0, 0, 0.5);
+		width: 100%;
+		position: absolute;
+		top: 0;
+		left: 0;
+	}
+
+	header {
+	   position: fixed;
+		top: 0;
+		left: 0;
+	   height: 75px;
+	   width: 100%;
+		border-bottom: solid 1px rgba(182, 182, 182, 0.6);
+		z-index: 1000;
+		h1,h2,h3,h4,h5,h6 {
+			margin: 0;
+		}
+		a {
+			text-decoration: none;
+			color: white;
+		}
+		.brand {
+			padding: 19px;
+			position: absolute;
+			width: 152px;
+			left: 50%;
+			margin-left: -76px;
+		}
+		.menu-icon-box {
+			color: white;
+			font-size: 36px;
+			text-align: right;
+			position: absolute;
+			right: 20px;
+			padding: 1.2rem;
+			font-size: 2rem;
+			@include mobile {
+				right: 0;
+				bottom: 0;
+			}
+		}
+	}
+
+	.background {
+		position: fixed;
+		top: 0;
+		left: 0;
+		z-index: 0;
+		height: 100%;
+		width: 100%;
+		background-image: url("../assets/piano.jpeg");
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-position: center;
+	}

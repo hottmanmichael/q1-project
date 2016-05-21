@@ -1,0 +1,86 @@
+$search-card-color: rgb(245, 245, 245);
+
+@import "mquery";
+
+
+.home-view {
+   top: 100px;
+   position: relative;
+   // color: black;
+   .main-header {
+      text-align: center;
+      margin-right: 10%;
+      margin-left: 10%;
+      @include mobile {
+         margin: 0;
+      }
+      .subtitle {
+         font-size: 2.456em;
+         @include mobile {
+            font-size: 2em;
+         }
+      }
+   }
+
+   #artist-search {
+      left: 50%;
+      top: 10rem;
+      width: 50%;
+      margin-left: -25%;
+      position: absolute;
+      color: black;
+      @include mobile {
+         width: 75%;
+         margin-left: -15%;
+         left: 25%;
+      }
+      .home-view-search.large {
+         border: none;
+         border-bottom: solid 1px black;
+         outline: none;
+         padding: 1.2rem;
+         width: 100%;
+         height: 4.5rem;
+         font-size: 1.46em;
+         @include tablet {
+            width: 100%;
+            height: 4.5rem;
+            font-size: 1.46em;
+         }
+         @include mobile {
+            width: 100%;
+            height: 4.5rem;
+            font-size: 1em;
+         }
+      }
+		.artist-box {
+			height: 50px;
+			overflow: scroll;
+			width: 100%;
+			border: 1px solid;
+			margin-top: 3px;
+			background-color: $search-card-color;
+			box-shadow: 0 0 1px rgba(78, 78, 78, 0.5);
+			opacity: 1;
+			transition: opacity 300ms ease-in-out;
+			&.fade {
+				opacity: 0.8;
+			}
+			&:hover {
+				background-color: darken($search-card-color, 30%);
+				cursor: pointer;
+			}
+			.name {
+				width: 80%;
+				margin: 13px;
+				float: left;
+			}
+			.thumbnail {
+				float: left;
+				width: 20%;
+				height: 48px;
+				width: 48px;
+			}
+		}
+   }
+}
