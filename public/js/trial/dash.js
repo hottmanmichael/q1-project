@@ -10,6 +10,7 @@
       SING_IT: document.getElementById('singit'), //lyrics
       DISCOVER_IT: document.getElementById('discoverit') //similar artists
    };
+   const TOP_OF_SPOTIFY_EMBED = 590;
 
    var user = new User();
 
@@ -59,7 +60,7 @@
    function loadSpotify() {
       //load artist from spotify and load iframe with top 10
       var artistRequestPath = SPOTIFY_BASE_URL + "/artists/"+PAGE_ARTIST.id;
-      var spotify = new Ajax('GET', artistRequestPath, function(err,res) {
+      new Ajax('GET', artistRequestPath, function(err,res) {
          loadIframe(res.uri);
          loadAlbums();
          /** TODO:
@@ -85,14 +86,18 @@
          var type = "album_type=album,single"; //don't load compilations
          var limit = "&limit=50"; //up to 50 albums
 
-         var albums = new Ajax(
+         new Ajax(
             'GET',
             SPOTIFY_BASE_URL+"/artists/"+PAGE_ARTIST.id+"/albums?"+type+limit,
             function(err, res) { //callback
+               //add all albums to page
                for (var album = 0; album < res.items.length; album++) {
                   appendToList(res.items[album], SECTION.HEAR_IT.querySelector('#wheel-albums'));
-                  console.log("res.items: ", res.items[album]);
+                  // console.log("res.items: ", res.items[album]);
                }
+               //load songs from albums
+               loadSongs(res.items);
+
             }, null
          );
 
@@ -113,7 +118,62 @@
          // }
       }
 
-      function loadSongs() {
+      var albumTracks = [];
+      function loadSongs(albums) {
+         //takes an array of albums and
+         //recursively waits to load the next album's songs
+
+         //grab current album and remove
+         var currAlbum = albums.shift();
+         // https://api.spotify.com/v1/albums/"+currAlbum.id+"/tracks
+
+         new Ajax('GET',
+            SPOTIFY_BASE_URL+"/albums/"+currAlbum.id+"/tracks", function(err,res) {
+               if (albums.length > 0) {
+                  // console.log("albumsArray: ", albumsArray);
+                  albumTracks.push(res.items);
+                  loadSongs(albums);
+                  return;
+               }
+         }, null);
+
+         var tracksSection = SECTION.HEAR_IT.querySelector('#wheel-tracks');
+         //albumTracks = [array of tracks]
+         //albumTracks is array of arrays of albums
+         for (var album in albumTracks) {
+            var currAlbum = albumTracks[album];
+            for (var track = 0; track < currAlbum.length; track++) {
+               appendToList(currAlbum[track], tracksSection);
+            }
+         }
+
+
+         // //request songs from current album
+         // var tracks = GlobalArtist.spotify.request; //new request object
+         // tracks.open('GET', "https://api.spotify.com/v1/albums/"+currAlbum.id+"/tracks");
+         // tracks.send();
+         // tracks.onload = function() {
+         //    // console.log("loaded: ", this.readyState);
+         //    //once the song is loaded, check if any albums are left,
+         //    //if there are remaining albums, load next albums songs
+         //    if (albumsArray.length > 0) {
+         //       // console.log("albumsArray: ", albumsArray);
+         //       albumTracks.push(this.apiData.items);
+         //       loadSongs(albumsArray);
+         //       return;
+         //    }
+         //    //done with recursive song fetch
+         //
+         //    var tracksSection = SECTION.hearit.querySelector('#wheel-tracks');
+         //
+         //    //albumTracks = [array of tracks]
+         //    //albumTracks is array of arrays of albums
+         //    for (var album in albumTracks) {
+         //       var currAlbum = albumTracks[album];
+         //       for (var track = 0; track < currAlbum.length; track++) {
+         //          appendToList(currAlbum[track], tracksSection);
+         //       }
+         //    }
 
       }
 
@@ -167,7 +227,7 @@
          scrollToPlayerTop()
       }
       function scrollToPlayerTop() {
-         document.body.scrollTop = 645;
+         document.body.scrollTop = TOP_OF_SPOTIFY_EMBED;
       }
 
 
