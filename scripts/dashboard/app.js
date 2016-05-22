@@ -33,7 +33,7 @@
       }
    }
 
-   init();
+   // init();
    function init() {
       console.log("GlobalArtist ID: ", GlobalArtist.spotify.id);
       loadSpotify();

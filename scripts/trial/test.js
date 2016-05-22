@@ -12,7 +12,7 @@
    }
 
    //set up window user object for use throughout
-   user.establish(user.fetchLocal('model'));
+   user.establish(user.fetchLocal('MODEL'));
 
    console.log("user: ", user);
 
@@ -122,50 +122,32 @@
          target = e.target.parentElement;
       } else target = e.target;
       console.log("has artist: ", target.hasArtist);
-      if (!target.hasArtist) return;
+      if (!target.hasArtist) return; //if no artist, do not route
 
-      console.log("id: ", target.id);
-      console.log("name: ", target.name.toLowerCase());
-      console.log("name: ", target);
+      // console.log("id: ", target.id);
+      // console.log("name: ", target.name.toLowerCase());
+      // console.log("name: ", target);
       var artist = {
          id: target.id,
-         name: target.name.toLowerCase()
+         name: target.name,
+         slug: target.name.replace(/\s/g, '-').toLowerCase()
       }
-
 
       user.setLocal('CURRENT_ARTIST', artist);
 
-      console.log("FROM LOCAL: ", user.fetchLocal('CURRENT_ARTIST'))
+      // console.log("FROM LOCAL: ", user.fetchLocal('CURRENT_ARTIST'));
 
+      var dashboard = '/dash.html';
+      var query = "?"+artist.slug;
 
+      //handle route
+      window.location.assign(dashboard + query);
 
-
-      // var artists = spotifyRequest.apiData.artists.items;
-      // var id;
-      // if (e !== null && typeof e !== 'undefined') {
-      //    console.log("e: ", e.target.parentElement.id);
-      //    id = e.target.parentElement.id;
-      // }
-      // //get first artist in list
-      // //function should technically not be called if there
-      // //are no artists, buuut just in case
-      //
-      // //FIXME: Should always get the correct artist!, not the first!
-      // /**
-      // * FIXME:
-      // */
-      // if (spotifyRequest.apiData.artists.items.length > 0) {
-      //    user.setLocal('currentArtist', id);
-      //    window.location.pathname = '/dashboard';
-      //    // console.log("first artist in list: ", artists[0]);
-      //    // console.log("ID: ", artists[0].id);
-      //    // console.log("URI: ", artists[0].uri);
-      // }
    }
 
 
    function handleResponseError() {
-
+      /** FIXME! **/
    }
 
 

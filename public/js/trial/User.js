@@ -78,9 +78,9 @@ var User = function() {
       }
    }
 
-   this.fetchLocal = function(from, key) {
-      if (typeof from === 'undefined' || from === null) return null;
-      switch (from) {
+   this.fetchLocal = function(pullFrom, key) {
+      if (typeof pullFrom === 'undefined' || pullFrom === null) return null;
+      switch (pullFrom) {
          case 'MODEL':
             return JSON.parse(localStorage.getItem(MODEL));
             break;
@@ -91,22 +91,28 @@ var User = function() {
             return JSON.parse(localStorage.getItem(CACHE));
             break;
          default:
+            /** FIXME: Handle Error Here **/
             return null; //err
       }
    };
 
    this.setLocal = function(storeTo, value) {
-      switch (from) {
+      if (typeof storeTo === 'undefined' || storeTo === null) return null;
+      switch (storeTo) {
          case 'MODEL':
+            /** FIXME: Ensure correct storage! **/
             localStorage.setItem(MODEL, JSON.stringify(value));
             break;
          case 'CURRENT_ARTIST':
+            /** FIXME: Ensure correct storage! **/
             localStorage.setItem(CURRENT_ARTIST, JSON.stringify(value));
             break;
          case 'CACHE':
+            /** FIXME: Ensure correct storage! **/
             localStorage.setItem(CACHE, JSON.stringify(value));
             break;
          default:
+            /** FIXME: Handle Error Here **/
             return null; //err
       }
    };
@@ -116,6 +122,16 @@ var User = function() {
    this.saveToCache = function() {};
 }
 
+
+
+var Artist = function(id, name, slug) {
+   this.id = id;
+   this.name = name;
+   this.slug = slug;
+}
+Artist.prototype.fixme = function () {
+
+};
 
 // // (function() {
 //
