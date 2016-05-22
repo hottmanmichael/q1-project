@@ -19,27 +19,22 @@
    //handle user input for artist search
    var artistSearch = document.getElementById('main-artist-search');
    var wait = window.setTimeout(handleSearch(null), 0);
+   const waitTime = 500;
    artistSearch.addEventListener('keyup', handleUserInput);
 
    //dropdown underneath search bar for suggestions
    var searchDigest = document.querySelector('#artist-search .digest');
-   console.log("searchDigest: ", searchDigest)
+   console.log("searchDigest: ", searchDigest);
 
 
    function handleUserInput(e) {
       if (e.target.value === '') {
          removeCurrentDigestArtists();
       } else {
-         if (e.charCode === 13 || e.code === "Enter") {
-            // handleSubmit();
-         } else { //send data to provide suggestions dropdown
-            //wait for user to stop typing
-            window.clearTimeout(wait);
-            wait = setTimeout(function() {
-               //search for artist with input value
-               handleSearch(e.target.value);
-            }, 500);
-         }
+         window.clearTimeout(wait);
+         wait = setTimeout(function() {
+            handleSearch(e.target.value);
+         }, waitTime);
       }
    }
 
@@ -76,16 +71,18 @@
 
    function addArtistToDigest(artist) {
       var artistBox = document.createElement('div');
-         artistBox.className = "artist-box fade";
-         artistBox.addEventListener('click', handleSubmit);
+         artistBox.className = "artist-box";
+         artistBox.hasArtist = false;
       var abox_name = document.createElement('h3');
          abox_name.className = "name";
       if (artist === null) {
          abox_name.innerHTML = "No artist found..."
       } else { // artist(s) exist(s)
+         artistBox.hasArtist = true;
+         artistBox.id = artist.id;
+         artistBox.name = artist.name;
          //show artist name
          abox_name.innerHTML = artist.name;
-         artistBox.id = artist.id;
          if (artist.images.length > 0) {
             var abox_photo = document.createElement('img');
                abox_photo.className = "thumbnail";
@@ -95,45 +92,75 @@
             artistBox.appendChild(abox_photo);
          }
       }
+
+      //register event listener
+      //and prevent bubbling
+      artistBox.addEventListener('click', function(e) {
+         handleSubmit(e, null);
+      });
+
       //append all elements
       artistBox.appendChild(abox_name);
       searchDigest.appendChild(artistBox);
-      setTimeout(function(){
-         console.log("class list: ", artistBox.classList);
+      setTimeout(function() {
          artistBox.classList.remove('fade');
-      },10);
+      }, 10);
    }
 
    function removeCurrentDigestArtists() {
-      // if (typeof searchDigest === 'undefined') return;
       while(searchDigest.children.length > 0) {
          searchDigest.firstChild.remove();
       }
    }
 
 
-   function handleSubmit(e) {
-      var artists = spotifyRequest.apiData.artists.items;
-      var id;
-      if (e !== null && typeof e !== 'undefined') {
-         console.log("e: ", e.target.parentElement.id);
-         id = e.target.parentElement.id;
-      }
-      //get first artist in list
-      //function should technically not be called if there
-      //are no artists, buuut just in case
+   function handleSubmit(e, searchString) {
+      //ensure click is handled on parent element
+      var target;
+      if (e.target.children.length === 0) {
+         //is child
+         target = e.target.parentElement;
+      } else target = e.target;
+      console.log("has artist: ", target.hasArtist);
+      if (!target.hasArtist) return;
 
-      //FIXME: Should always get the correct artist!, not the first!
-      /**
-      * FIXME:
-      */
-      if (spotifyRequest.apiData.artists.items.length > 0) {
-         user.setLocal('currentArtist', id);
-         window.location.pathname = '/dashboard';
-         // console.log("first artist in list: ", artists[0]);
-         // console.log("ID: ", artists[0].id);
-         // console.log("URI: ", artists[0].uri);
+      console.log("id: ", target.id);
+      console.log("name: ", target.name.toLowerCase());
+      console.log("name: ", target);
+      var artist = {
+         id: target.id,
+         name: target.name.toLowerCase()
       }
+
+
+      user.setLocal('CURRENT_ARTIST', artist);
+
+      console.log("FROM LOCAL: ", user.fetchLocal('CURRENT_ARTIST'))
+
+
+
+
+      // var artists = spotifyRequest.apiData.artists.items;
+      // var id;
+      // if (e !== null && typeof e !== 'undefined') {
+      //    console.log("e: ", e.target.parentElement.id);
+      //    id = e.target.parentElement.id;
+      // }
+      // //get first artist in list
+      // //function should technically not be called if there
+      // //are no artists, buuut just in case
+      //
+      // //FIXME: Should always get the correct artist!, not the first!
+      // /**
+      // * FIXME:
+      // */
+      // if (spotifyRequest.apiData.artists.items.length > 0) {
+      //    user.setLocal('currentArtist', id);
+      //    window.location.pathname = '/dashboard';
+      //    // console.log("first artist in list: ", artists[0]);
+      //    // console.log("ID: ", artists[0].id);
+      //    // console.log("URI: ", artists[0].uri);
+      // }
    }
 
 

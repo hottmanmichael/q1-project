@@ -6,7 +6,7 @@
    if (typeof localStorage.groupie === 'undefined') {
       localStorage.groupie = JSON.stringify(user);
    } else {
-      
+
    }
    console.log("User: ", user);
 

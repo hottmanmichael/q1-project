@@ -15,7 +15,8 @@
       artists: ['id1', 'id2', 'id3', etc]
    }
    * groupieCurrentArtist:{
-      id: (spotify id)
+      id: (spotify id),
+      name: (string lower case)
    }
    * groupieCache: [
       {
@@ -54,6 +55,7 @@ Local.prototype.set = function (target, value) {};
 var User = function() {
    const MODEL = 'GroupieUser';
    const CACHE = 'GroupieCache';
+   const CURRENT_ARTIST = 'GroupieCurrentArtist';
 
    this.authenticate = function() {
       //checks for user model GroupieUser
@@ -78,13 +80,36 @@ var User = function() {
 
    this.fetchLocal = function(from, key) {
       if (typeof from === 'undefined' || from === null) return null;
-      if (from === 'model') {
-         return JSON.parse(localStorage.getItem(MODEL));
+      switch (from) {
+         case 'MODEL':
+            return JSON.parse(localStorage.getItem(MODEL));
+            break;
+         case 'CURRENT_ARTIST':
+            return JSON.parse(localStorage.getItem(CURRENT_ARTIST));
+            break;
+         case 'CACHE':
+            return JSON.parse(localStorage.getItem(CACHE));
+            break;
+         default:
+            return null; //err
       }
-
    };
 
-   this.setLocal = function() {};
+   this.setLocal = function(storeTo, value) {
+      switch (from) {
+         case 'MODEL':
+            localStorage.setItem(MODEL, JSON.stringify(value));
+            break;
+         case 'CURRENT_ARTIST':
+            localStorage.setItem(CURRENT_ARTIST, JSON.stringify(value));
+            break;
+         case 'CACHE':
+            localStorage.setItem(CACHE, JSON.stringify(value));
+            break;
+         default:
+            return null; //err
+      }
+   };
 
    this.findInCache = function() {};
 

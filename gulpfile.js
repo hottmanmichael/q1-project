@@ -26,7 +26,9 @@ gulp.task('dev-css', function() {
       }))
       .on('error', function(err) {
          gutil.log("[dev]", err.toString());
+         this.emit('end'); //resumes watch after error
       })
+      .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'ff 17', 'opera 12.1', 'ios 6', 'android 4'))
       .pipe(gulp.dest(CSS_BUILD_DIR));
 });
 gulp.task('css-prod', function() {
