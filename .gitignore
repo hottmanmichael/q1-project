@@ -1,3 +1,7 @@
 /node_modules
 .sass-cache
 .sass-cache/*
+.firebaserc
+firebase.json
+database.rules.json
+/public
