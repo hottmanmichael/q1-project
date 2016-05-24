@@ -2,6 +2,8 @@ var gulp = require('gulp');
 var path = require('path');
 //css
 var compass = require('gulp-compass'),
+   sass = require('gulp-sass'),
+   maps = require('gulp-sourcemaps'),
    autoprefixer = require('gulp-autoprefixer'),
    minifycss  = require('gulp-cssnano'),
    watch = gulp.watch,
@@ -17,17 +19,23 @@ gulp.task('watch-css', ['dev-css'], function() {
    gulp.watch('./styles/**/*',  ['dev-css']);
 });
 gulp.task('dev-css', function() {
-   return gulp.src(['./styles/**/*.scss'])
-      .pipe(compass({
-         sass     : './styles',
-         css      : CSS_BUILD_DIR,
-         logging  : true,
-         comments : true,
-      }))
-      .on('error', function(err) {
-         gutil.log("[dev]", err.toString());
-      })
-      .pipe(gulp.dest(CSS_BUILD_DIR));
+   return gulp.src('./styles/**/*.scss')
+      // .pipe(compass({
+      //    sass     : './styles',
+      //    css      : CSS_BUILD_DIR,
+      //    logging  : true,
+      //    comments : true,
+      // }))
+      // .pipe(maps.init())
+      .pipe(sass())
+      // .on('error', function(err) {
+      //    gutil.log("[dev]", err.toString());
+      //    this.emit('end'); //resumes watch after error
+      // })
+      // .pipe(autoprefixer('last 2 version'))
+      .pipe(autoprefixer())
+      // .pipe(maps.write('.'))
+      .pipe(gulp.dest(CSS_BUILD_DIR))
 });
 gulp.task('css-prod', function() {
    return gulp.src(['./styles/**/*.scss'])
