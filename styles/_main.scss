@@ -14,10 +14,16 @@ $search-card-color: rgb(245, 245, 245);
       @include mobile {
          margin: 0;
       }
-      .subtitle {
+      .title {
          font-size: 2.456em;
          @include mobile {
             font-size: 2em;
+         }
+      }
+      .subtitle {
+         font-size: 1.765em;
+         @include mobile {
+            font-size: 1.456em;
          }
       }
    }
@@ -55,7 +61,7 @@ $search-card-color: rgb(245, 245, 245);
       }
 		.artist-box {
 			height: 50px;
-			overflow: scroll;
+			overflow: hidden;
 			width: 100%;
 			border: 1px solid;
 			margin-top: 3px;
@@ -74,6 +80,16 @@ $search-card-color: rgb(245, 245, 245);
 				width: 80%;
 				margin: 13px;
 				float: left;
+            @include tablet {
+               font-size: 1.1em;
+            }
+            @include mobile {
+               width: 77%;
+               margin: 0;
+               padding: 15px;
+               font-size: .8em;
+               overflow: hidden;
+            }
 			}
 			.thumbnail {
 				float: left;

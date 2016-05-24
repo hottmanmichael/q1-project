@@ -46,18 +46,13 @@
 *
 */
 
-var Local = function() {};
-Local.prototype.fetch = function (target, key, value) {};
-Local.prototype.set = function (target, value) {};
-
-
 
 var User = function() {
    const MODEL = 'GroupieUser';
    const CACHE = 'GroupieCache';
    const CURRENT_ARTIST = 'GroupieCurrentArtist';
 
-   this.authenticate = function() {
+   this.authenticated = function() {
       //checks for user model GroupieUser
       //if key exists in local storage, return true, else false
       return localStorage.getItem(MODEL) !== null;

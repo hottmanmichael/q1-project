@@ -7,7 +7,7 @@
    // console.log("user authenticated: ", user.authenticate());
 
    //if a user does not yet exist, create one
-   if (!user.authenticate()) {
+   if (!user.authenticated()) {
       user.create();
    }
 
@@ -19,7 +19,7 @@
    //handle user input for artist search
    var artistSearch = document.getElementById('main-artist-search');
    var wait = window.setTimeout(handleSearch(null), 0);
-   const waitTime = 500;
+   const waitTime = 350;
    artistSearch.addEventListener('keyup', handleUserInput);
 
    //dropdown underneath search bar for suggestions

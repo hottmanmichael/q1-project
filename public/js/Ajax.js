@@ -1,27 +1,5 @@
 'use strict';
-
-
-//modular code to handle api data and requests across files
-
-
-var Ajax = function(method, url, callback, data) {
-   this.request = new XMLHttpRequest();
-   this.request.onreadystatechange = handleRequest;
-   this.apiData = {};
-   this.errors = {};
-   function handleRequest() {
-      if (this.readyState === 4) {
-         if (this.status === 200) {
-            //success
-            this.apiData = JSON.parse(this.responseText);
-         } else {
-            this.errors = JSON.parse(this.responseText);
-            console.log("ERROR STATUS: ", this.status);
-         }
-      }
-   }
-}
-
+//modular code to handle api data across files
 
 const post = 'POST';
 const get = 'GET';

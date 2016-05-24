@@ -1,43 +1,6 @@
 $card-color: rgb(245, 245, 245);
 
 
-header {
-   @include mobile {
-      background-color: rgba(0, 0, 0, 0.6);
-   }
-   @include tablet {
-      background-color: rgba(0, 0, 0, 0.6);
-   }
-   .brand {
-      // @include tablet {
-      //    display: block;
-      // }
-      @include mobile {
-         display: none;
-      }
-   }
-   #page-title-artist-name {
-      padding: 23px;
-      width: auto;
-      font-size: 26px;
-   }
-   .artist-name {
-      width: auto;
-      max-width: 40%;
-      position: fixed;
-      left: 0;
-      top: 0;
-      // @include tablet {
-      //    max-width: 50%;
-      //
-      // }
-      @include mobile {
-         max-width: 100%;
-         width: 100%;
-      }
-   }
-}
-
 main {
    section {
       height: 600px;
@@ -114,14 +77,14 @@ main {
             width: 60%;
             margin: 0;
             padding: 1%;
-            font-size: 0.9em;
+            font-size: 1em;
          }
          @include mobile {
             width: 60%;
             margin: 0;
             padding: 1%;
             overflow: hidden;
-            font-size: 0.9em;
+            font-size: 1em;
          }
       }
       .thumbnail {
@@ -147,15 +110,15 @@ main {
          @include tablet {
             height: 75px;
             width: 75px;
-            font-size: 1.89em;
-            padding: 7%;
+            font-size: 2.42em;
+            padding: 0.509em;
          }
          @include mobile {
             overflow: hidden;
-            font-size: 1.89em;
+            font-size: 2.42em;
             right: auto;
             left: 0;
-            padding: 0.8em;
+            padding: 0.51em;
          }
       }
    }
@@ -223,5 +186,49 @@ main {
             opacity: 1;
          }
       }
+   }
+}
+//FIXME: Mobile and Table friendly
+#wheel-info {
+   height: 100%;
+   width: 100%;
+   .topic {
+      float: left;
+      height: 100%;
+      width: 65%;
+      padding: 20px;
+      padding-top: 0px;
+      position: relative;
+      .description {
+         line-height: 1.6;
+      }
+      a {
+         font-size: 1em;
+      }
+   }
+   .image-box {
+      width: 35%;
+      margin: 0;
+      float: left;
+      position: relative;
+      .image-inner {
+         position: relative;
+         width: 100%;
+      }
+      a {
+         position: absolute;
+         bottom: -10px;
+         left: 0;
+      }
+   }
+   a {
+      font-size: 0.65em;
+   }
+   .wiki-license {
+      position: absolute;
+      width: 150%; 
+      bottom: 0;
+      left: 0;
+      font-size: 0.65em;
    }
 }
