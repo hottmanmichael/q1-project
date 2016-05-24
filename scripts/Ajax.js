@@ -11,6 +11,7 @@ var Ajax = function(method, url, callback, data) {
    function handleRequest() {
       if (this.readyState === 4) {
          if (this.status === 200) {
+            /**FIXME: Caching here?? */
             callback(null, JSON.parse(this.responseText));
          } else {
             console.error("Error in Ajax " + method + " request: " + this);

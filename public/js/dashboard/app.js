@@ -12,8 +12,8 @@
    };
    const TOP_OF_SPOTIFY_EMBED = 590;
 
-   const GOOGLE_BASE_URL = "https://kgsearch.googleapis.com/v1/entities:search?query=ARTIST&key=AIzaSyAUrXU5tUMx8z9kuUq_uYKro-IHsTigorY&limit=1&indent=True"
-
+   const GOOGLE_BASE_URL = "https://kgsearch.googleapis.com/v1/entities:search?query=ARTIST&key=AIzaSyAUrXU5tUMx8z9kuUq_uYKro-IHsTigorY&limit=5&indent=True"
+   const BANDSINTOWN_BASE_URL = "http://api.bandsintown.com/artists/ARTIST/events.json?api_version=2.0&app_id=Groupie"
 
    //initialize user
    var user = new User();
@@ -50,9 +50,13 @@
 
    init();
    function init() {
-      loadArtistNameAsTitle();
-      loadSpotify();
-      //load bands in town
+      //spotify
+         loadArtistNameAsTitle();
+         loadSpotify();
+      //google knowledge graph
+         loadInformation();
+      //bands in town
+         // loadConcerts();
       //load something else??
    }
 
@@ -66,13 +70,16 @@
       //load artist from spotify and load iframe with top 10
       var artistRequestPath = SPOTIFY_BASE_URL + "/artists/"+PAGE_ARTIST.id;
       new Ajax('GET', artistRequestPath, function(err,res) {
-         loadIframe(res.uri);
-         loadAlbums(); // also calls load songs upon completion
-         loadInformation();
+         //spotify
+            loadIframe(res.uri);
+            /**FIXME: UNCOMMENT BELOW */
+            // loadAlbums(); // also calls load songs upon completion
+
          /** TODO:
             * add to user artists array if it doesn't already exist
             * handle CACHE ?? CAN ALSO DO IN AJAX.JS??
          **/
+
       }, null);
 
       function loadIframe(uri) {
@@ -102,7 +109,8 @@
                   // console.log("res.items: ", res.items[album]);
                }
                //load songs from albums
-               loadSongs(res.items);
+               /**FIXME: UNCOMMENT BELOW */
+               // loadSongs(res.items);
 
             }, null
          );
@@ -207,16 +215,23 @@
                title.innerHTML = data.name;
             var description = document.createElement('p');
                description.className = 'description';
-               description.innerHTML = data.detailedDescription.articleBody;
+               if (data.hasOwnProperty('detailedDescription')) {
+                  description.innerHTML = data.detailedDescription.articleBody;
+               } else description.innerHTML = "No description available...";
             var globe = document.createElement('i');
                globe.className = "fa fa-globe";
                globe.style.float = "left";
                globe.style.fontSize = "2em";
                globe.style.padding = "5px";
             var website = document.createElement('a');
-               website.href = data.url;
+               if (data.hasOwnProperty('url')) {
+                  website.href = data.url;
+                  website.innerHTML = "Artist Website";
+               } else {
+                  website.href = "#";
+                  website.innerHTML = "No website listed.";
+               }
                website.target = "_blank";
-               website.innerHTML = "Artist Website";
                website.className = "artist-website";
                website.style.float = "left";
                website.style.fontSize = "1.6em";
@@ -224,13 +239,25 @@
                website.style.textDecoration = "none";
 
             var wikiLink = document.createElement('a');
-               wikiLink.href = data.detailedDescription.url;
-               wikiLink.innerHTML = "Wikipedia";
+               if (data.hasOwnProperty('detailedDescription')) {
+                  wikiLink.href = data.detailedDescription.url;
+                  wikiLink.innerHTML = "Wikipedia";
+               } else {
+                  wikiLink.href = "#";
+                  wikiLink.innerHTML = "No Wikipedia page available...";
+               }
+
                wikiLink.target = "_blank";
          description.appendChild(wikiLink);
             var wikiLicense = document.createElement('a');
-               wikiLicense.href = data.detailedDescription.license;
-               wikiLicense.innerHTML = "License: " + data.detailedDescription.license;
+               if (data.hasOwnProperty('detailedDescription')) {
+                  wikiLicense.href = data.detailedDescription.license;
+                  wikiLicense.innerHTML = "License: " + data.detailedDescription.license;
+               } else {
+                  wikiLicense.href = "#";
+                  wikiLicense.innerHTML = "No Wiki license link available...";
+               }
+               // wikiLicense.href = data.detailedDescription.license;
                wikiLicense.className = "wiki-license";
                wikiLicense.target = "_blank";
          topic.appendChild(title);
@@ -243,14 +270,19 @@
             imgBox.className = 'image-box';
             var image = document.createElement('img');
                image.className = 'image-inner';
-               image.src = data.image.contentUrl;
-               image.alt = data.name;
-            var imgLicense = document.createElement('a');
-               imgLicense.href = data.image.license;
-               imgLicense.innerHTML = "Image License: " + data.image.license;
-               imgLicense.target = "_blank";
-         imgBox.appendChild(image);
-         imgBox.appendChild(imgLicense);
+               if (data.hasOwnProperty('image')) {
+                  image.src = data.image.contentUrl;
+                  image.alt = data.name;
+                  var imgLicense = document.createElement('a');
+                     imgLicense.innerHTML = "Image License: " + data.image.license;
+                     imgLicense.target = "_blank";
+                  imgBox.appendChild(image);
+                  imgBox.appendChild(imgLicense);
+               } else {
+                  image.src = "http://placehold.it/350x150";
+                  image.alt = "no image available.";
+               }
+
 
          section.appendChild(topic);
          section.appendChild(imgBox);
