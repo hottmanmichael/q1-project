@@ -1,8 +1,8 @@
 'use strict';
 //modular code to handle api data across files
 
-const post = 'POST';
-const get = 'GET';
+var post = 'POST';
+var get = 'GET';
 
 
 var Ajax = function(method, url, callback, data) {

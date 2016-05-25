@@ -3,17 +3,17 @@
 
 (function(){
 
-   const SPOTIFY_BASE_URL = "https://api.spotify.com/v1";
-   const SECTION = {
+   var SPOTIFY_BASE_URL = "https://api.spotify.com/v1";
+   var SECTION = {
       HEAR_IT: document.getElementById("hearit"), //music
       SEE_IT: document.getElementById("seeit"), //concerts
       SING_IT: document.getElementById('singit'), //lyrics
       DISCOVER_IT: document.getElementById('discoverit') //similar artists
    };
-   const TOP_OF_SPOTIFY_EMBED = 590;
+   var TOP_OF_SPOTIFY_EMBED = 590;
 
-   const GOOGLE_BASE_URL = "https://kgsearch.googleapis.com/v1/entities:search?query=ARTIST&key=AIzaSyAUrXU5tUMx8z9kuUq_uYKro-IHsTigorY&limit=5&indent=True"
-   const BANDSINTOWN_BASE_URL = "http://api.bandsintown.com/artists/ARTIST/events.json?api_version=2.0&app_id=Groupie"
+   var GOOGLE_BASE_URL = "https://kgsearch.googleapis.com/v1/entities:search?query=ARTIST&key=AIzaSyAUrXU5tUMx8z9kuUq_uYKro-IHsTigorY&limit=5&indent=True"
+   var BANDSINTOWN_BASE_URL = "http://api.bandsintown.com/artists/ARTIST/events.json?api_version=2.0&app_id=Groupie"
 
    //initialize user
    var user = new User();
@@ -73,7 +73,7 @@
          //spotify
             loadIframe(res.uri);
             /**FIXME: UNCOMMENT BELOW */
-            // loadAlbums(); // also calls load songs upon completion
+            loadAlbums(); // also calls load songs upon completion
 
          /** TODO:
             * add to user artists array if it doesn't already exist
@@ -199,9 +199,11 @@
       var query = PAGE_ARTIST.slug.replace(/(-)/g, '+'); //replace all "-"
       var url = GOOGLE_BASE_URL.replace('ARTIST', query);
       new Ajax('GET', url, function(err, res) {
-         console.log("Artist Info: ", res.itemListElement[0].result);
-         //SECTION.HEAR_IT.querySelector('#wheel-info');
-         buildInfo(res.itemListElement[0].result);
+         if (!err) {
+            console.log("Artist Info: ", res.itemListElement[0].result);
+            //SECTION.HEAR_IT.querySelector('#wheel-info');
+            buildInfo(res.itemListElement[0].result);
+         }
       }, null);
 
 
@@ -331,12 +333,12 @@
       }
    }
 
-   var menubar = document.querySelector('header');
+   var header = document.querySelector('header');
    window.addEventListener('scroll', function() {
       if (window.scrollY > 50) {
-         if (!menubar.classList.contains('darken'))
-            menubar.className += " darken";
-      } else menubar.classList.remove('darken');
+         if (!header.classList.contains('darken'))
+            header.className += " darken";
+      } else header.classList.remove('darken');
    });
 
 

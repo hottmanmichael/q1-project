@@ -14,17 +14,17 @@
    //set up window user object for use throughout
    user.establish(user.fetchLocal('MODEL'));
 
-   console.log("user: ", user);
+   // console.log("user: ", user);
 
    //handle user input for artist search
    var artistSearch = document.getElementById('main-artist-search');
    var wait = window.setTimeout(handleSearch(null), 0);
-   const waitTime = 250;
+   var waitTime = 250;
    artistSearch.addEventListener('keyup', handleUserInput);
 
    //dropdown underneath search bar for suggestions
    var searchDigest = document.querySelector('#artist-search .digest');
-   console.log("searchDigest: ", searchDigest);
+   // console.log("searchDigest: ", searchDigest);
 
 
    function handleUserInput(e) {
@@ -62,6 +62,7 @@
    }
 
    function showArtists(data) {
+      console.log("DATA: ", data);
       if (data.artists.items.length > 0) {
          for (var artist = 0; artist < data.artists.items.length; artist++) {
             addArtistToDigest(data.artists.items[artist]);

@@ -2,12 +2,14 @@
 //Fonts
 	@import url(https://fonts.googleapis.com/css?family=Lato:300,400|Ubuntu:300);
 
+	//responsive settings
 	@import "mquery";
 
 //Additional Stylesheets
    @import "main";
 	@import "dashboard/dash";
 	@import "dashboard/contentwheel";
+	@import "menu";
 
 
 	* {
@@ -86,7 +88,7 @@
 		.menu-icon-box {
 			color: white;
 			font-size: 36px;
-			text-align: right;
+			// text-align: right;
 			position: absolute;
 			right: 20px;
 			top: 0;

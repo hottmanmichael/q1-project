@@ -43,9 +43,9 @@
 
 
 var User = function() {
-   const MODEL = 'GroupieUser';
-   const CACHE = 'GroupieCache';
-   const CURRENT_ARTIST = 'GroupieCurrentArtist';
+   var MODEL = 'GroupieUser';
+   var CACHE = 'GroupieCache';
+   var CURRENT_ARTIST = 'GroupieCurrentArtist';
 
    this.authenticated = function() {
       //checks for user model GroupieUser
@@ -105,6 +105,35 @@ var User = function() {
             /** FIXME: Handle Error Here **/
             return null; //err
       }
+   };
+
+   this.addFavorite = function(artist, callback) {
+      console.log("type of artist (object): ", typeof artist);
+      console.log("artist: ", artist);
+      var user = JSON.parse(localStorage.getItem(MODEL));
+      console.log("user: ", user.artists);
+      //FIXME: DON"T ADD IF ALREADY EXISTS! THROW ERROR!
+      for (var a = 0; a < user.artists.length; a++) {
+         if (user.artists[a].id === artist.id) {
+            return callback({
+               status: "error",
+               message: "Artist already exists in favorites."
+            });
+         }
+      }
+      //add artist
+      user.artists.push(artist);
+      localStorage.setItem(MODEL, JSON.stringify(user));
+
+      if (artist.name.length > 15) {
+         var name = artist.name.substring(0,15) + "...";
+      } else var name = artist.name;
+
+      //send callback response
+      return callback({
+         status: 'success',
+         message: name + " saved as favorite."
+      });
    };
 
    this.findInCache = function() {};

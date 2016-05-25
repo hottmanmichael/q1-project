@@ -3,7 +3,9 @@ var path = require('path');
 //css
 var compass = require('gulp-compass'),
    sass = require('gulp-sass'),
-   maps = require('gulp-sourcemaps'),
+   // sourcemaps = require('gulp-sourcemaps'),
+   // postcss = require('gulp-postcss'),
+   // scss = require('postcss-scss'),
    autoprefixer = require('gulp-autoprefixer'),
    minifycss  = require('gulp-cssnano'),
    watch = gulp.watch,
@@ -32,8 +34,8 @@ gulp.task('dev-css', function() {
       //    gutil.log("[dev]", err.toString());
       //    this.emit('end'); //resumes watch after error
       // })
-      // .pipe(autoprefixer('last 2 version'))
       .pipe(autoprefixer())
+      // .pipe(postcss([ autoprefixer({ browsers: ['last 2 versions'] }) ]))
       // .pipe(maps.write('.'))
       .pipe(gulp.dest(CSS_BUILD_DIR))
 });
