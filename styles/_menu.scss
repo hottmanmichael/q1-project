@@ -8,7 +8,7 @@
    z-index: 1500;
    width: 550px; //desktop
    min-width: 550px;
-   transform: translateX(630px);
+   transform: translateX(630px) scale(0.95);
    transition: transform 450ms cubic-bezier(.36,.02,.11,.95);
    border-left: solid 1px rgba(98, 98, 98, 0.32);
    box-shadow: 0 0 3px rgba(26, 26, 26, 0.89);
@@ -16,13 +16,13 @@
    @include tablet {
       width: 100%;
       max-width: 768px;
-      transform: translateX(768px);
+      transform: translateX(768px) scale(0.95);
       transition: transform 350ms cubic-bezier(.36,.02,.11,.95);
    }
    @include mobile {
       width: 100%;
       min-width: 320px;
-      transform: translateX(768px);
+      transform: translateX(768px) scale(0.95);
       transition: transform 250ms cubic-bezier(.36,.02,.11,.95);
    }
    &.open {

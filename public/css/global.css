@@ -351,8 +351,8 @@ main .content-header {
   z-index: 1500;
   width: 550px;
   min-width: 550px;
-  -webkit-transform: translateX(630px);
-          transform: translateX(630px);
+  -webkit-transform: translateX(630px) scale(0.95);
+          transform: translateX(630px) scale(0.95);
   -webkit-transition: -webkit-transform 450ms cubic-bezier(0.36, 0.02, 0.11, 0.95);
   transition: -webkit-transform 450ms cubic-bezier(0.36, 0.02, 0.11, 0.95);
   transition: transform 450ms cubic-bezier(0.36, 0.02, 0.11, 0.95);
@@ -364,8 +364,8 @@ main .content-header {
     .user-menu {
       width: 100%;
       max-width: 768px;
-      -webkit-transform: translateX(768px);
-              transform: translateX(768px);
+      -webkit-transform: translateX(768px) scale(0.95);
+              transform: translateX(768px) scale(0.95);
       -webkit-transition: -webkit-transform 350ms cubic-bezier(0.36, 0.02, 0.11, 0.95);
       transition: -webkit-transform 350ms cubic-bezier(0.36, 0.02, 0.11, 0.95);
       transition: transform 350ms cubic-bezier(0.36, 0.02, 0.11, 0.95);
@@ -374,8 +374,8 @@ main .content-header {
     .user-menu {
       width: 100%;
       min-width: 320px;
-      -webkit-transform: translateX(768px);
-              transform: translateX(768px);
+      -webkit-transform: translateX(768px) scale(0.95);
+              transform: translateX(768px) scale(0.95);
       -webkit-transition: -webkit-transform 250ms cubic-bezier(0.36, 0.02, 0.11, 0.95);
       transition: -webkit-transform 250ms cubic-bezier(0.36, 0.02, 0.11, 0.95);
       transition: transform 250ms cubic-bezier(0.36, 0.02, 0.11, 0.95);

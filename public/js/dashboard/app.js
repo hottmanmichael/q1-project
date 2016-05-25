@@ -12,8 +12,8 @@
    };
    var TOP_OF_SPOTIFY_EMBED = 590;
 
-   var GOOGLE_BASE_URL = "https://kgsearch.googleapis.com/v1/entities:search?query=ARTIST&key=AIzaSyAUrXU5tUMx8z9kuUq_uYKro-IHsTigorY&limit=5&indent=True"
-   var BANDSINTOWN_BASE_URL = "http://api.bandsintown.com/artists/ARTIST/events.json?api_version=2.0&app_id=Groupie"
+   var GOOGLE_BASE_URL = "https://kgsearch.googleapis.com/v1/entities:search?query=ARTIST&key=AIzaSyAUrXU5tUMx8z9kuUq_uYKro-IHsTigorY&limit=5&indent=True&types=MusicGroup";
+   var BANDSINTOWN_BASE_URL = "http://api.bandsintown.com/artists/ARTIST/events.json?api_version=2.0&app_id=Groupie";
 
    //initialize user
    var user = new User();
@@ -196,30 +196,41 @@
    function loadInformation() {
       //ajax to google knowledge graph
       console.log("PAGE_ARTIST: ", PAGE_ARTIST);
-      var query = PAGE_ARTIST.slug.replace(/(-)/g, '+'); //replace all "-"
+      var query = PAGE_ARTIST.name
+         .replace(/(\W+)/g, '+') //replace non-words plus extra whitespace with "+"
+         .toLowerCase();
       var url = GOOGLE_BASE_URL.replace('ARTIST', query);
+      console.log("query: ", query)
       new Ajax('GET', url, function(err, res) {
          if (!err) {
             console.log("Artist Info: ", res.itemListElement[0].result);
-            //SECTION.HEAR_IT.querySelector('#wheel-info');
-            buildInfo(res.itemListElement[0].result);
+            buildInfoSection(res.itemListElement[0].result);
          }
       }, null);
 
 
-      function buildInfo(data) {
+      function buildInfoSection(data) {
          var section = SECTION.HEAR_IT.querySelector('#wheel-info');
+         var hipsterTally = 0;
 
          var topic = document.createElement('div');
             topic.className = 'topic';
             var title = document.createElement('h1');
                title.className = 'title';
-               title.innerHTML = data.name;
+               if (data.hasOwnProperty('name')) {
+                  title.innerHTML = data.name;
+               } else {
+                  title.innerHTML = "Data not found.";
+                  hipsterTally++;
+               }
             var description = document.createElement('p');
                description.className = 'description';
                if (data.hasOwnProperty('detailedDescription')) {
                   description.innerHTML = data.detailedDescription.articleBody;
-               } else description.innerHTML = "No description available...";
+               } else {
+                  description.innerHTML = "No description available...";
+                  hipsterTally++;
+               }
             var globe = document.createElement('i');
                globe.className = "fa fa-globe";
                globe.style.float = "left";
@@ -228,10 +239,11 @@
             var website = document.createElement('a');
                if (data.hasOwnProperty('url')) {
                   website.href = data.url;
-                  website.innerHTML = "Artist Website";
+                  website.innerHTML = data.url.replace("http://","").replace("https://","");
                } else {
                   website.href = "#";
-                  website.innerHTML = "No website listed.";
+                  globe.style.fontSize = "0";
+                  hipsterTally++;
                }
                website.target = "_blank";
                website.className = "artist-website";
@@ -246,7 +258,7 @@
                   wikiLink.innerHTML = "Wikipedia";
                } else {
                   wikiLink.href = "#";
-                  wikiLink.innerHTML = "No Wikipedia page available...";
+                  hipsterTally++;
                }
 
                wikiLink.target = "_blank";
@@ -257,11 +269,18 @@
                   wikiLicense.innerHTML = "License: " + data.detailedDescription.license;
                } else {
                   wikiLicense.href = "#";
-                  wikiLicense.innerHTML = "No Wiki license link available...";
+                  // wikiLicense.innerHTML = "No Wiki license link available...";
+                  hipsterTally++;
                }
                // wikiLicense.href = data.detailedDescription.license;
                wikiLicense.className = "wiki-license";
                wikiLicense.target = "_blank";
+
+            if (hipsterTally === 5) {
+               description.innerHTML = "This band is so hipster, you heard about them before Google did...";
+
+            }
+
          topic.appendChild(title);
          topic.appendChild(description);
          topic.appendChild(globe);
@@ -281,9 +300,15 @@
                   imgBox.appendChild(image);
                   imgBox.appendChild(imgLicense);
                } else {
-                  image.src = "http://placehold.it/350x150";
-                  image.alt = "no image available.";
+                  topic.style.width = "100%"; //display text at 100 width% // graceful degredation
+                  if (hipsterTally === 5) {
+                     image.src = "http://www.telegraph.co.uk/content/dam/men/2015/12/11/Cera1-large_trans++qVzuuqpFlyLIwiB6NTmJwZwVSIA7rSIkPn18jgFKEo0.jpg";
+                     image.alt = "Hipster Michael Cera";
+                     topic.style.width = "65%";
+                     imgBox.appendChild(image);
+                  }
                }
+
 
 
          section.appendChild(topic);
