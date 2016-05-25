@@ -30,6 +30,7 @@
          artistFromStorage.slug
       );
    }
+   /*FIXME: What if !artistFromStorage??? **/
 
    // console.log("MENU PAGE_ARTIST: ", PAGE_ARTIST);
 
@@ -46,8 +47,10 @@
    function handleMenuState() {
       menu.classList.toggle('open');
       if (!menu.isOpen) {
+         stopBodyScroll();
          buildMenu();
       } else {
+         resumeBodyScroll();
          removeMenu();
       }
       menu.isOpen = !menu.isOpen;
@@ -57,6 +60,7 @@
 
 
    function buildMenu() {
+      menu.classList.add('fade');
       var menuInner = document.createElement('div');
          menuInner.className = "menu-inner";
       var menuTitle = document.createElement('h1');
@@ -115,7 +119,7 @@
                addNewFavoriteToList(user.artists[i]);
             }
          }
-
+      menu.classList.remove('fade');
    }
 
    function addNewFavoriteToList(artist) {
@@ -135,6 +139,7 @@
 
    function removeMenu() {
       var menuInner = document.querySelector('.menu-inner');
+      menu.classList.add('fade');
       setTimeout(function() {
          menu.removeChild(menuInner);
       }, 350);
@@ -153,7 +158,13 @@
       window.location.assign(dashboard + query);
    }
 
-
+   var body = document.querySelector('#app');
+   function stopBodyScroll() {
+      document.body.classList.add('noscroll');
+   }
+   function resumeBodyScroll() {
+      document.body.classList.remove('noscroll');
+   }
 
 
 

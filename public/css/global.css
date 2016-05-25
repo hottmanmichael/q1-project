@@ -342,6 +342,7 @@ main .content-header {
         opacity: 0; }
 
 .user-menu {
+  opacity: 0;
   height: 100%;
   position: fixed;
   top: 0;
@@ -349,6 +350,7 @@ main .content-header {
   background: rgba(50, 36, 33, 0.98);
   z-index: 1500;
   width: 550px;
+  min-width: 550px;
   -webkit-transform: translateX(630px);
           transform: translateX(630px);
   -webkit-transition: -webkit-transform 450ms cubic-bezier(0.36, 0.02, 0.11, 0.95);
@@ -356,9 +358,14 @@ main .content-header {
   transition: transform 450ms cubic-bezier(0.36, 0.02, 0.11, 0.95);
   transition: transform 450ms cubic-bezier(0.36, 0.02, 0.11, 0.95), -webkit-transform 450ms cubic-bezier(0.36, 0.02, 0.11, 0.95);
   border-left: solid 1px rgba(98, 98, 98, 0.32);
-  box-shadow: 0 0 3px rgba(26, 26, 26, 0.89); }
+  box-shadow: 0 0 3px rgba(26, 26, 26, 0.89);
+  overflow: scroll; }
   @media (min-width: 768px) and (max-width: 1023px) {
     .user-menu {
+      width: 100%;
+      max-width: 768px;
+      -webkit-transform: translateX(768px);
+              transform: translateX(768px);
       -webkit-transition: -webkit-transform 350ms cubic-bezier(0.36, 0.02, 0.11, 0.95);
       transition: -webkit-transform 350ms cubic-bezier(0.36, 0.02, 0.11, 0.95);
       transition: transform 350ms cubic-bezier(0.36, 0.02, 0.11, 0.95);
@@ -367,35 +374,38 @@ main .content-header {
     .user-menu {
       width: 100%;
       min-width: 320px;
+      -webkit-transform: translateX(768px);
+              transform: translateX(768px);
       -webkit-transition: -webkit-transform 250ms cubic-bezier(0.36, 0.02, 0.11, 0.95);
       transition: -webkit-transform 250ms cubic-bezier(0.36, 0.02, 0.11, 0.95);
       transition: transform 250ms cubic-bezier(0.36, 0.02, 0.11, 0.95);
       transition: transform 250ms cubic-bezier(0.36, 0.02, 0.11, 0.95), -webkit-transform 250ms cubic-bezier(0.36, 0.02, 0.11, 0.95); } }
   .user-menu.open {
+    opacity: 1;
     -webkit-transform: translateX(0px);
             transform: translateX(0px);
-    -webkit-transition: -webkit-transform 250ms cubic-bezier(0.36, 0.02, 0.11, 0.95);
-    transition: -webkit-transform 250ms cubic-bezier(0.36, 0.02, 0.11, 0.95);
-    transition: transform 250ms cubic-bezier(0.36, 0.02, 0.11, 0.95);
-    transition: transform 250ms cubic-bezier(0.36, 0.02, 0.11, 0.95), -webkit-transform 250ms cubic-bezier(0.36, 0.02, 0.11, 0.95); }
+    -webkit-transition: all 250ms cubic-bezier(0.36, 0.02, 0.11, 0.95);
+    transition: all 250ms cubic-bezier(0.36, 0.02, 0.11, 0.95); }
     @media (min-width: 768px) and (max-width: 1023px) {
       .user-menu.open {
-        -webkit-transition: -webkit-transform 350ms cubic-bezier(0.36, 0.02, 0.11, 0.95);
-        transition: -webkit-transform 350ms cubic-bezier(0.36, 0.02, 0.11, 0.95);
-        transition: transform 350ms cubic-bezier(0.36, 0.02, 0.11, 0.95);
-        transition: transform 350ms cubic-bezier(0.36, 0.02, 0.11, 0.95), -webkit-transform 350ms cubic-bezier(0.36, 0.02, 0.11, 0.95); } }
+        -webkit-transition: all 350ms cubic-bezier(0.36, 0.02, 0.11, 0.95);
+        transition: all 350ms cubic-bezier(0.36, 0.02, 0.11, 0.95); } }
     @media (max-width: 767px) {
       .user-menu.open {
-        -webkit-transition: -webkit-transform 450ms cubic-bezier(0.36, 0.02, 0.11, 0.95);
-        transition: -webkit-transform 450ms cubic-bezier(0.36, 0.02, 0.11, 0.95);
-        transition: transform 450ms cubic-bezier(0.36, 0.02, 0.11, 0.95);
-        transition: transform 450ms cubic-bezier(0.36, 0.02, 0.11, 0.95), -webkit-transform 450ms cubic-bezier(0.36, 0.02, 0.11, 0.95); } }
+        -webkit-transition: all 450ms cubic-bezier(0.36, 0.02, 0.11, 0.95);
+        transition: all 450ms cubic-bezier(0.36, 0.02, 0.11, 0.95); } }
+  .user-menu.fade {
+    opacity: 0;
+    -webkit-transition: all 300ms cubic-bezier(0.36, 0.02, 0.11, 0.95);
+    transition: all 300ms cubic-bezier(0.36, 0.02, 0.11, 0.95); }
   .user-menu .close-menu {
     position: absolute;
     top: 0;
     right: 0;
     padding: 18px;
     font-size: 2.5em; }
+    .user-menu .close-menu:hover {
+      cursor: pointer; }
   .user-menu .menu-inner {
     height: 75px;
     top: 0; }
@@ -417,11 +427,13 @@ main .content-header {
     .user-menu .favorites-list .favorite-item {
       width: auto;
       height: 50px;
-      padding: 11px;
+      padding: 13px;
       font-size: 1.3em;
       background: grey;
       margin: 8px;
-      opacity: 0.8; }
+      opacity: 0.8;
+      border-radius: 3px;
+      cursor: pointer; }
       .user-menu .favorites-list .favorite-item:hover {
         opacity: 1; }
   .user-menu .save-favorite {
@@ -448,7 +460,10 @@ body {
   font-family: 'Ubuntu', sans-serif;
   font-weight: 300;
   color: white;
-  font-size: 16px; }
+  font-size: 16px;
+  position: relative; }
+  body.noscroll {
+    position: fixed; }
 
 #app {
   background: rgba(0, 0, 0, 0.5);
@@ -514,6 +529,8 @@ header {
     font-size: 2rem;
     -webkit-transition: all 250ms ease-in-out;
     transition: all 250ms ease-in-out; }
+    header .menu-icon-box:hover {
+      cursor: pointer; }
   header #page-title-artist-name {
     padding: 23px;
     width: auto;
