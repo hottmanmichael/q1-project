@@ -12,6 +12,7 @@
    };
    var TOP_OF_SPOTIFY_EMBED = 590;
 
+
    var GOOGLE_BASE_URL = "https://kgsearch.googleapis.com/v1/entities:search?query=ARTIST&key=AIzaSyAUrXU5tUMx8z9kuUq_uYKro-IHsTigorY&limit=5&indent=True&types=MusicGroup";
    // var BANDSINTOWN_BASE_URL = "http://api.bandsintown.com/artists/ARTIST/events.json?api_version=2.0&app_id=Groupie";
    // var BANDSINTOWN_BASE_URL_CHECK = "http://api.bandsintown.com/artists/ARTIST.json?api_version=2.0&app_id=YOUR_APP_ID"
@@ -43,9 +44,11 @@
    //setup the artist
    var artistFromStorage = user.fetchLocal('CURRENT_ARTIST');
 
-   //fallback if fail on local storage
-   // console.log("artistFromStorage: ", artistFromStorage)
-   // if (!artistFromStorage) {}
+
+   if (!artistFromStorage) {
+      //reroute back to home if no current artist
+      return window.location.assign('/');
+   }
 
    //to give artist methods
    var PAGE_ARTIST = new Artist(
@@ -211,8 +214,9 @@
       // console.log("query: ", query)
       new Ajax('GET', url, function(err, res) {
          if (!err) {
-            // console.log("Artist Info: ", res.itemListElement[0].result);
-            buildInfoSection(res.itemListElement[0].result);
+            if (res.itemListElement.length > 0) {
+               buildInfoSection(res.itemListElement[0].result);
+            }
          }
       }, null);
 

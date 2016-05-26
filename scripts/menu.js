@@ -18,9 +18,6 @@
 
    var artistFromStorage = user.fetchLocal('CURRENT_ARTIST');
 
-   //fallback if fail on local storage
-   // console.log("artistFromStorage: ", artistFromStorage)
-   // if (!artistFromStorage) {}
 
    //to give artist methods
    if (artistFromStorage) {
@@ -95,8 +92,7 @@
                      if (res.status === 'success') {
                         addNewFavoriteToList(PAGE_ARTIST);
                      }
-                     //notification
-                     var notif = new Notification(res.status, res.message, 2000).show();
+                     new Notification(res.status, res.message, 2000).show();
                   });
                });
             current.appendChild(save);

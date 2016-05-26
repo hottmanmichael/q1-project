@@ -136,7 +136,7 @@ main {
    // background-color: rgb(90, 156, 164);
    .track-list-item {
       position: relative;
-      width: 150px;
+      width: ((1/5) * 100%) - 1.4%;
       height: 50px;
       margin: 7px;
       float: left;
@@ -151,10 +151,11 @@ main {
          // min-width: 1px;
       }
       .name {
-         width: 100%;
+         width: 80%;
          margin: 0;
          font-size: 1em;
          color: black;
+         text-align: center;
          @include tablet {
             float: left;
             width: 80%;
@@ -173,7 +174,7 @@ main {
          position: absolute;
          color: rgb(87, 87, 87);
          top: 0px;
-         left: 47px;
+         right: 0px;
          opacity: 0.2;
          @include tablet {
             right: 0;
@@ -197,6 +198,13 @@ main {
 #wheel-info {
    height: 100%;
    width: 100%;
+   @include tablet {
+      overflow: scroll;
+   }
+   @include mobile {
+      overflow: scroll;
+   }
+
    .topic {
       float: left;
       height: 100%;
@@ -204,11 +212,24 @@ main {
       padding: 20px;
       padding-top: 0px;
       position: relative;
+      @include mobile {
+         width: 100%;
+         height: auto;
+      }
       .description {
          line-height: 1.6;
       }
+      // .artist-webiste {
+      //    @include mobile {
+      //       font-size: 1.4em !important;
+      //    }
+      // }
       a {
          font-size: 1em;
+         text-decoration: none;
+         @include mobile {
+            font-size: 1em !important;
+         }
       }
    }
    .image-box {
@@ -216,6 +237,9 @@ main {
       margin: 0;
       float: left;
       position: relative;
+      @include mobile {
+         width: 100%;
+      }
       .image-inner {
          position: relative;
          width: 100%;
@@ -235,6 +259,12 @@ main {
       bottom: 0;
       left: 0;
       font-size: 0.65em;
+      @include mobile {
+         position: relative;
+         width: 100%;
+         font-size: 0.55em;
+         float: left;
+      }
    }
 }
 
@@ -265,16 +295,19 @@ $tix-false-color: #EF5350;
       .item-inner {
          float: left;
          position: relative;
+         overflow: hidden;
+         white-space: nowrap;
+         font-size: 1em;
       }
       h3, h4 {
          padding: 8px;
          margin: 0;
       }
       .concert-title {
-         width: 25%;
+         width: 30%;
       }
       .concert-datetime {
-         width: 45%;
+         width: 40%;
       }
       .seemore {
          width: 30%;
@@ -288,6 +321,9 @@ $tix-false-color: #EF5350;
          }
          &.tix-false {
             background-color: $tix-false-color;
+            .text {
+               padding-left: 7px;
+            }
          }
          &:hover {
             opacity: 1;
@@ -295,16 +331,19 @@ $tix-false-color: #EF5350;
       }
       @include mobile {
          .concert-title {
-            width: 50%;
+            width: 60%;
             font-size: 0.9em;
          }
          .concert-datetime {
             display: none;
          }
          .seemore {
-            width: 50%;
+            width: 40%;
             font-size: 0.9em;
             padding: 5px;
+            .text {
+               font-size: 0.9em;
+            }
          }
       }
    }
