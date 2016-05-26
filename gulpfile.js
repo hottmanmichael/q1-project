@@ -24,14 +24,14 @@ gulp.task('watch-css', ['dev-css'], function() {
 });
 gulp.task('dev-css', function() {
    return gulp.src('./styles/**/*.scss')
-      // .pipe(compass({
-      //    sass     : './styles',
-      //    css      : CSS_BUILD_DIR,
-      //    logging  : true,
-      //    comments : true,
-      // }))
+      .pipe(compass({
+         sass     : './styles',
+         css      : CSS_BUILD_DIR,
+         logging  : true,
+         comments : true,
+      }))
       // .pipe(maps.init())
-      .pipe(sass())
+      // .pipe(sass())
       // .on('error', function(err) {
       //    gutil.log("[dev]", err.toString());
       //    this.emit('end'); //resumes watch after error
@@ -53,7 +53,7 @@ gulp.task('css-prod', function() {
       .on('error', function(err) {
          gutil.log("[production]", err.toString());
       })
-      .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'ff 17', 'opera 12.1', 'ios 6', 'android 4'))
+      .pipe(autoprefixer())
       .pipe(minifycss())
       .pipe(gulp.dest(CSS_BUILD_DIR));
 });
@@ -69,5 +69,8 @@ gulp.task('dev-js', function() {
 gulp.task('js-prod', function(){
    return gulp.src(['./scripts/**/*.js'])
       .pipe(uglify()) //compresses js files
+      .on('error', function(err) {
+         gutil.log("[js production]", err.toString());
+      })
       .pipe(gulp.dest(JS_BUILD_DIR));
 });

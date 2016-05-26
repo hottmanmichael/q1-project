@@ -69,6 +69,11 @@
       var close = document.createElement('i');
          close.className = "fa fa-times close-menu";
          close.addEventListener('click', handleMenuState);
+      var returnHome = document.createElement('i');
+         returnHome.className = "fa fa-home go-home";
+         returnHome.addEventListener('click', handleReturnHome);
+
+      menuInner.appendChild(returnHome);
       menuInner.appendChild(close);
       menuInner.appendChild(menuTitle);
 
@@ -90,7 +95,8 @@
                      if (res.status === 'success') {
                         addNewFavoriteToList(PAGE_ARTIST);
                      }
-                     alert(res.message);
+                     //notification
+                     var notif = new Notification(res.status, res.message, 2000).show();
                   });
                });
             current.appendChild(save);
@@ -129,11 +135,9 @@
          currArtist.innerHTML = artist.name;
          currArtist.properties = artist;
          currArtist.addEventListener('click', function(e) {
-            // console.log("e Props: ", e.target.properties);//??
             user.setLocal('CURRENT_ARTIST', e.target.properties);
             navigateToFavoriteSelected(e.target.properties);
          });
-         // console.log("favoritesList: ", favoritesList);
       favoritesList.appendChild(currArtist);
    }
 
@@ -156,6 +160,10 @@
 
       //handle route
       window.location.assign(dashboard + query);
+   }
+
+   function handleReturnHome() {
+      window.location.assign('/'); //go home page, you're drunk
    }
 
 
