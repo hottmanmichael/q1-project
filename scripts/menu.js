@@ -158,14 +158,13 @@
       window.location.assign(dashboard + query);
    }
 
-   var body = document.querySelector('#app');
-   function stopBodyScroll() {
-      document.body.classList.add('noscroll');
-   }
-   function resumeBodyScroll() {
-      document.body.classList.remove('noscroll');
-   }
-
-
 
 })();
+
+
+function stopBodyScroll() {
+   document.body.classList.add('noscroll');
+}
+function resumeBodyScroll() {
+   document.body.classList.remove('noscroll');
+}

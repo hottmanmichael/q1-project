@@ -1,1 +1,784 @@
-"use strict";!function(){function e(){t(),n(),a(),i()}function t(){var e=document.getElementById("page-title-artist-name");e.innerHTML=L.name}function n(){function e(e){var t=document.querySelector(".iframe-box.spotify-embed"),n=document.createElement("iframe");n.src="https://embed.spotify.com/?uri="+e,n.width="100%",n.height="100%",n.frameborder="0",n.style.border="none",n.allowtransparency="true",t.appendChild(n)}function t(){var e="album_type=album,single",t="&limit=10";new Ajax("GET",u+"/artists/"+L.id+"/albums?"+e+t,function(e,t){for(var i=0;i<t.items.length;i++)a(t.items[i],p.HEAR_IT.querySelector("#wheel-albums"));n(t.items)},null)}function n(e){var t=e.shift();new Ajax("GET",u+"/albums/"+t.id+"/tracks",function(t,a){return e.length>0?(r.push(a.items),void n(e)):void 0},null);var i=p.HEAR_IT.querySelector("#wheel-tracks");for(var l in r)for(var t=r[l],c=0;c<t.length;c++)a(t[c],i)}function a(e,t){var n=document.createElement("div");n.className=e.type+"-list-item",n.style.overflow="hidden";var a=document.createElement("h3");if(a.className="name","album"===e.type?("album"!==e.album_type&&(a.innerHTML=e.name+" ("+e.type+")"),a.innerHTML=e.name):a.innerHTML=e.name,"track"!==e.type&&e.images.length>0){var i=document.createElement("img");i.className="thumbnail",i.src=e.images[0].url,i.alt=e.name,i.height="40",i.width="40",n.appendChild(i)}var r=document.createElement("i");r.className="fa fa-play-circle-o play-item "+e.type,r.uri=e.uri,r.addEventListener("click",s),n.appendChild(a),n.appendChild(r),t.appendChild(n)}var i=u+"/artists/"+L.id;new Ajax("GET",i,function(n,a){e(a.uri),t()},null,!0);var r=[]}function a(){function e(e){var t=p.HEAR_IT.querySelector("#wheel-info"),n=0,a=document.createElement("div");a.className="topic";var i=document.createElement("h1");i.className="title",e.hasOwnProperty("name")?i.innerHTML=e.name:(i.innerHTML="Data not found.",n++);var r=document.createElement("p");r.className="description",e.hasOwnProperty("detailedDescription")?r.innerHTML=e.detailedDescription.articleBody:(r.innerHTML="No description available...",n++);var l=document.createElement("i");l.className="fa fa-globe",l.style["float"]="left",l.style.fontSize="2em",l.style.padding="5px";var c=document.createElement("a");e.hasOwnProperty("url")?(c.href=e.url,c.innerHTML=e.url.replace("http://","").replace("https://","")):(c.href="#",l.style.fontSize="0",n++),c.target="_blank",c.className="artist-website",c.style["float"]="left",c.style.fontSize="1.6em",c.style.padding="5px",c.style.textDecoration="none";var o=document.createElement("a");e.hasOwnProperty("detailedDescription")?(o.href=e.detailedDescription.url,o.innerHTML="Wikipedia"):(o.href="#",n++),o.target="_blank",r.appendChild(o);var s=document.createElement("a");e.hasOwnProperty("detailedDescription")?(s.href=e.detailedDescription.license,s.innerHTML="License: "+e.detailedDescription.license):(s.href="#",n++),s.className="wiki-license",s.target="_blank",5===n&&(r.innerHTML="This band is so hipster, you heard about them before Google did..."),a.appendChild(i),a.appendChild(r),a.appendChild(l),a.appendChild(c),a.appendChild(s);var d=document.createElement("div");d.className="image-box";var m=document.createElement("img");if(m.className="image-inner",e.hasOwnProperty("image")){m.src=e.image.contentUrl,m.alt=e.name;var u=document.createElement("a");u.innerHTML="Image License: "+e.image.license,u.target="_blank",d.appendChild(m),d.appendChild(u)}else a.style.width="100%",5===n&&(m.src="http://www.telegraph.co.uk/content/dam/men/2015/12/11/Cera1-large_trans++qVzuuqpFlyLIwiB6NTmJwZwVSIA7rSIkPn18jgFKEo0.jpg",m.alt="Hipster Michael Cera",a.style.width="65%",d.appendChild(m));t.appendChild(a),t.appendChild(d)}console.log("PAGE_ARTIST: ",L);var t=L.name.replace(/(\W+)/g,"+").toLowerCase(),n=v.replace("ARTIST",t);console.log("query: ",t),new Ajax("GET",n,function(t,n){t||(console.log("Artist Info: ",n.itemListElement[0].result),e(n.itemListElement[0].result))},null)}function i(){var e=g.ARTIST.replace("ARTIST",L.name.replace(/\s/g,"%20")),t=E+encodeURIComponent(g.BASE+e);new Ajax("GET",t,function(e,t){e||(console.log("RES: ",t),t.upcoming_event_count>0?r():c())},null)}function r(){var e=g.ALL_EVENTS.replace("ARTIST",L.name.replace(/\s/g,"%20")),t=E+encodeURIComponent(g.BASE+e);new Ajax("GET",t,function(e,t){e||(console.log("CONCERTS: ",t),l(t))},null)}function l(e){function t(e){console.log("concert: ",e);var t=document.createElement("li");t.className="concert-item";var a=document.createElement("h3");a.className="concert-title item-inner",a.innerHTML=e.formatted_location;var i=document.createElement("h3");i.className="concert-datetime item-inner",i.innerHTML=e.formatted_datetime;var r=document.createElement("div"),l=document.createElement("h4");l.className="text","available"===e.ticket_status?(r.className="seemore item-inner tix-true",l.innerHTML="Tickets Available"):(r.className="seemore item-inner tix-false",l.innerHTML="Tickets Unavailable"),r.appendChild(l),r.addEventListener("click",function(t){o(e)}),r.addEventListener("mouseenter",function(e){e.target.classList.add("flip")}),r.addEventListener("mouseleave",function(e){e.target.classList.remove("flip")}),t.appendChild(a),t.appendChild(i),t.appendChild(r),n.appendChild(t)}var n=document.createElement("ul");n.className="concert-list";for(var a=0;a<e.length;a++)t(e[a]);console.log("section seeit: ",p.SEE_IT),p.SEE_IT.querySelector(".seeit-inner").appendChild(n)}function c(){}function o(e){var t=document.createElement("div");t.className="concert-info";var n=document.createElement("div");n.className="title",n.innerHTML="<h2>"+e.title+"</h2>";var a=document.createElement("div");if(a.className="date",a.innerHTML="<p>"+e.formatted_datetime+"</p>",e.description){var i=document.createElement("div");i.className="description",i.innerHTML="<p>Event Description: "+e.description+"</p>"}var r=document.createElement("a");r.target="_blank";var l=document.createElement("div");l.className="tickets","available"===e.ticket_status?(r.href=e.ticket_url,l.innerHTML="Buy Tickets",l.classList.add("tix-true")):(l.innerHTML="Tickets Unavailable",l.classList.add("tix-false"),r.href="#"),r.appendChild(l);var c=document.createElement("a");c.target="_blank",c.href=e.facebook_rsvp_url;var o=document.createElement("img");o.className="facebook-logo",o.src="../assets/FB-f-Logo__blue_1024.png",c.appendChild(o),t.appendChild(n),t.appendChild(a),e.description&&t.appendChild(i),t.appendChild(r),t.appendChild(c);new Modal(t).show()}function s(e){document.querySelector("iframe").src="https://embed.spotify.com/?uri="+e.target.uri,d()}function d(){document.body.scrollTop=h}function m(){for(var e=0;e<b.length;e++)b[e].addEventListener("click",function(e){if(!e.target.classList.contains("active")){for(var t=0;t<w.length;t++)w[t].classList.contains("active")&&(w[t].classList.remove("active"),b[t].classList.remove("active"));console.log("e.target.for:",e.target.attributes.isFor.value);var n=e.target.attributes.isFor.value,a=document.getElementById("wheel-"+n);a.className+=" active fade",setTimeout(function(){a.classList.remove("fade")},10),e.target.className+=" active fade",setTimeout(function(){e.target.classList.remove("fade")},10)}})}var u="https://api.spotify.com/v1",p={HEAR_IT:document.getElementById("hearit"),SEE_IT:document.getElementById("seeit"),SING_IT:document.getElementById("singit"),DISCOVER_IT:document.getElementById("discoverit")},h=590,v="https://kgsearch.googleapis.com/v1/entities:search?query=ARTIST&key=AIzaSyAUrXU5tUMx8z9kuUq_uYKro-IHsTigorY&limit=5&indent=True&types=MusicGroup",f="&app_id=Groupie",g={BASE:"http://api.bandsintown.com/artists/",ARTIST:"ARTIST.json?api_version=2.0"+f,ALL_EVENTS:"ARTIST/events.json?api_version=2.0"+f},E="http://jsonp.afeld.me/?url=",T=new User;T.authenticated()||T.create(),T.establish(T.fetchLocal("MODEL")),console.log("user on page load and setup: ",T);var y=T.fetchLocal("CURRENT_ARTIST");console.log("artistFromStorage: ",y);var L=new Artist(y.id,y.name,y.slug);console.log("PAGE_ARTIST: ",L),e();var w=document.querySelectorAll(".wheel-item"),b=document.querySelectorAll(".content-wheel .navigation .list .item");m();var _=document.querySelector("header");window.addEventListener("scroll",function(){window.scrollY>50?_.classList.contains("darken")||(_.className+=" darken"):_.classList.remove("darken")})}();
+
+'use strict';
+
+(function(){
+
+   var SPOTIFY_BASE_URL = "https://api.spotify.com/v1";
+   var SECTION = {
+      HEAR_IT: document.getElementById("hearit"), //music
+      SEE_IT: document.getElementById("seeit"), //concerts
+      SING_IT: document.getElementById('singit'), //lyrics
+      DISCOVER_IT: document.getElementById('discoverit') //similar artists
+   };
+   var TOP_OF_SPOTIFY_EMBED = 590;
+
+   var GOOGLE_BASE_URL = "https://kgsearch.googleapis.com/v1/entities:search?query=ARTIST&key=AIzaSyAUrXU5tUMx8z9kuUq_uYKro-IHsTigorY&limit=5&indent=True&types=MusicGroup";
+   // var BANDSINTOWN_BASE_URL = "http://api.bandsintown.com/artists/ARTIST/events.json?api_version=2.0&app_id=Groupie";
+   // var BANDSINTOWN_BASE_URL_CHECK = "http://api.bandsintown.com/artists/ARTIST.json?api_version=2.0&app_id=YOUR_APP_ID"
+   var BANDSINTOWN_ID = "&app_id=Groupie";
+   var BANDSINTOWN = {
+      BASE: "http://api.bandsintown.com/artists/",
+      ARTIST: "ARTIST.json?api_version=2.0"+BANDSINTOWN_ID,
+      ALL_EVENTS: "ARTIST/events.json?api_version=2.0"+BANDSINTOWN_ID
+   }
+   var CORS_BYPASS = "https://jsonp.afeld.me/?url=";
+
+
+   //initialize user
+   var user = new User();
+
+
+   //if a user does not yet exist, create one
+   if (!user.authenticated()) {
+      user.create();
+   }
+
+   //set up window user object for use throughout
+   user.establish(user.fetchLocal('MODEL'));
+
+
+   console.log("user on page load and setup: ", user);
+
+
+   //setup the artist
+   var artistFromStorage = user.fetchLocal('CURRENT_ARTIST');
+
+   //fallback if fail on local storage
+   console.log("artistFromStorage: ", artistFromStorage)
+   // if (!artistFromStorage) {}
+
+   //to give artist methods
+   var PAGE_ARTIST = new Artist(
+      artistFromStorage.id,
+      artistFromStorage.name,
+      artistFromStorage.slug
+   );
+
+   console.log("PAGE_ARTIST: ", PAGE_ARTIST);
+
+
+   init();
+   function init() {
+      //spotify
+         loadArtistNameAsTitle();
+         loadSpotify();
+      //google knowledge graph
+         loadInformation();
+      //bands in town concerts
+         checkArtistConcerts();
+      //load something else??
+   }
+
+   function loadArtistNameAsTitle() {
+      var pageTitle = document.getElementById('page-title-artist-name');
+         pageTitle.innerHTML = PAGE_ARTIST.name;
+   }
+
+
+   function loadSpotify() {
+      //load artist from spotify and load iframe with top 10
+      var artistRequestPath = SPOTIFY_BASE_URL + "/artists/"+PAGE_ARTIST.id;
+      new Ajax('GET', artistRequestPath, function(err,res) {
+         //spotify
+            loadIframe(res.uri);
+            /**FIXME: UNCOMMENT BELOW */
+            loadAlbums(); // also calls load songs upon completion
+
+         /** TODO:
+            * add to user artists array if it doesn't already exist
+            * handle CACHE ?? CAN ALSO DO IN AJAX.JS??
+         **/
+      }, null, true); //true === needs CORS
+
+      function loadIframe(uri) {
+         var iframeBox = document.querySelector('.iframe-box.spotify-embed');
+         var iframe = document.createElement('iframe');
+            iframe.src = "https://embed.spotify.com/?uri="+uri;
+            iframe.width = "100%";
+            iframe.height = "100%";
+            iframe.frameborder = "0"
+            iframe.style.border = "none";
+            iframe.allowtransparency = "true";
+         //load elements
+         iframeBox.appendChild(iframe);
+      }
+
+      function loadAlbums() {
+         var type = "album_type=album,single"; //don't load compilations
+         var limit = "&limit=10"; //up to 50 albums
+
+         new Ajax(
+            'GET',
+            SPOTIFY_BASE_URL+"/artists/"+PAGE_ARTIST.id+"/albums?"+type+limit,
+            function(err, res) { //callback
+               //add all albums to page
+               for (var album = 0; album < res.items.length; album++) {
+                  appendToList(res.items[album], SECTION.HEAR_IT.querySelector('#wheel-albums'));
+                  // console.log("res.items: ", res.items[album]);
+               }
+               //load songs from albums
+               /**FIXME: UNCOMMENT BELOW */
+               loadSongs(res.items);
+
+            }, null
+         );
+      }
+
+      var albumTracks = [];
+      function loadSongs(albums) {
+         //takes an array of albums and
+         //recursively waits to load the next album's songs
+
+         //grab current album and remove
+         var currAlbum = albums.shift();
+         // https://api.spotify.com/v1/albums/"+currAlbum.id+"/tracks
+
+         new Ajax('GET',
+            SPOTIFY_BASE_URL+"/albums/"+currAlbum.id+"/tracks", function(err,res) {
+               if (albums.length > 0) {
+                  // console.log("albumsArray: ", albumsArray);
+                  albumTracks.push(res.items);
+                  loadSongs(albums);
+                  return;
+               }
+         }, null);
+
+         var tracksSection = SECTION.HEAR_IT.querySelector('#wheel-tracks');
+         //albumTracks = [array of tracks]
+         //albumTracks is array of arrays of albums
+         for (var album in albumTracks) {
+            var currAlbum = albumTracks[album];
+            for (var track = 0; track < currAlbum.length; track++) {
+               appendToList(currAlbum[track], tracksSection);
+            }
+         }
+      }
+
+      function appendToList(item, parent) {
+         // console.log("item: ", item, parent);
+         var child = document.createElement('div');
+            child.className = item.type + "-list-item";
+            // child.innerHTML = item.name;
+            child.style.overflow = 'hidden';
+            // child.style.fontSize = '12px';
+            var text = document.createElement('h3');
+               text.className = 'name';
+               //display singles & compilation albums
+               if (item.type === 'album') {
+                  if (item.album_type !== 'album') {
+                     text.innerHTML = item.name + " (" + item.type + ")";
+                  }
+                  text.innerHTML = item.name;
+               } else {
+                  text.innerHTML = item.name;
+               }
+
+               if (item.type !== 'track') { //is not a song
+                  if (item.images.length > 0) {
+                     var img = document.createElement('img');
+                        img.className = 'thumbnail';
+                        img.src = item.images[0].url;
+                        img.alt = item.name;
+                        img.height = "40";
+                        img.width = "40";
+                     child.appendChild(img);
+                  }
+               }
+
+         //make icon to play
+         var play = document.createElement('i');
+            play.className = "fa fa-play-circle-o play-item " + item.type;
+            // play.id = "spotify:track"+item.id;
+            // console.log("item: ", item);
+            play.uri = item.uri;
+            play.addEventListener('click', handleSpotifyPlayerChange);
+
+
+         child.appendChild(text);
+         child.appendChild(play);
+         parent.appendChild(child);
+      }
+   } //end loadSpotify()
+
+
+   function loadInformation() {
+      //ajax to google knowledge graph
+      console.log("PAGE_ARTIST: ", PAGE_ARTIST);
+      var query = PAGE_ARTIST.name
+         .replace(/(\W+)/g, '+') //replace non-words plus extra whitespace with "+"
+         .toLowerCase();
+      var url = GOOGLE_BASE_URL.replace('ARTIST', query);
+      console.log("query: ", query)
+      new Ajax('GET', url, function(err, res) {
+         if (!err) {
+            console.log("Artist Info: ", res.itemListElement[0].result);
+            buildInfoSection(res.itemListElement[0].result);
+         }
+      }, null);
+
+
+      function buildInfoSection(data) {
+         var section = SECTION.HEAR_IT.querySelector('#wheel-info');
+         var hipsterTally = 0;
+
+         var topic = document.createElement('div');
+            topic.className = 'topic';
+            var title = document.createElement('h1');
+               title.className = 'title';
+               if (data.hasOwnProperty('name')) {
+                  title.innerHTML = data.name;
+               } else {
+                  title.innerHTML = "Data not found.";
+                  hipsterTally++;
+               }
+            var description = document.createElement('p');
+               description.className = 'description';
+               if (data.hasOwnProperty('detailedDescription')) {
+                  description.innerHTML = data.detailedDescription.articleBody;
+               } else {
+                  description.innerHTML = "No description available...";
+                  hipsterTally++;
+               }
+            var globe = document.createElement('i');
+               globe.className = "fa fa-globe";
+               globe.style.float = "left";
+               globe.style.fontSize = "2em";
+               globe.style.padding = "5px";
+            var website = document.createElement('a');
+               if (data.hasOwnProperty('url')) {
+                  website.href = data.url;
+                  website.innerHTML = data.url.replace("http://","").replace("https://","");
+               } else {
+                  website.href = "#";
+                  globe.style.fontSize = "0";
+                  hipsterTally++;
+               }
+               website.target = "_blank";
+               website.className = "artist-website";
+               website.style.float = "left";
+               website.style.fontSize = "1.6em";
+               website.style.padding = "5px";
+               website.style.textDecoration = "none";
+
+            var wikiLink = document.createElement('a');
+               if (data.hasOwnProperty('detailedDescription')) {
+                  wikiLink.href = data.detailedDescription.url;
+                  wikiLink.innerHTML = "Wikipedia";
+               } else {
+                  wikiLink.href = "#";
+                  hipsterTally++;
+               }
+
+               wikiLink.target = "_blank";
+         description.appendChild(wikiLink);
+            var wikiLicense = document.createElement('a');
+               if (data.hasOwnProperty('detailedDescription')) {
+                  wikiLicense.href = data.detailedDescription.license;
+                  wikiLicense.innerHTML = "License: " + data.detailedDescription.license;
+               } else {
+                  wikiLicense.href = "#";
+                  // wikiLicense.innerHTML = "No Wiki license link available...";
+                  hipsterTally++;
+               }
+               // wikiLicense.href = data.detailedDescription.license;
+               wikiLicense.className = "wiki-license";
+               wikiLicense.target = "_blank";
+
+            if (hipsterTally === 5) {
+               description.innerHTML = "This band is so hipster, you heard about them before Google did...";
+            }
+
+         topic.appendChild(title);
+         topic.appendChild(description);
+         topic.appendChild(globe);
+         topic.appendChild(website);
+         topic.appendChild(wikiLicense);
+
+         var imgBox = document.createElement('div');
+            imgBox.className = 'image-box';
+            var image = document.createElement('img');
+               image.className = 'image-inner';
+               if (data.hasOwnProperty('image')) {
+                  image.src = data.image.contentUrl;
+                  image.alt = data.name;
+                  var imgLicense = document.createElement('a');
+                     imgLicense.innerHTML = "Image License: " + data.image.license;
+                     imgLicense.target = "_blank";
+                  imgBox.appendChild(image);
+                  imgBox.appendChild(imgLicense);
+               } else {
+                  topic.style.width = "100%"; //display text at 100 width% // graceful degredation
+                  if (hipsterTally === 5) {
+                     image.src = "http://www.telegraph.co.uk/content/dam/men/2015/12/11/Cera1-large_trans++qVzuuqpFlyLIwiB6NTmJwZwVSIA7rSIkPn18jgFKEo0.jpg";
+                     image.alt = "Hipster Michael Cera";
+                     topic.style.width = "65%";
+                     imgBox.appendChild(image);
+                  }
+               }
+
+         section.appendChild(topic);
+         section.appendChild(imgBox);
+      }
+   }
+
+
+
+   //Bands in Town Concerts
+
+   function checkArtistConcerts() {
+      var query = BANDSINTOWN.ARTIST.replace("ARTIST", PAGE_ARTIST.name.replace(/\s/g, '%20'));
+      var bitUrl = CORS_BYPASS + encodeURIComponent(BANDSINTOWN.BASE + query);
+
+      new Ajax('GET', bitUrl, function(err, res) {
+         if (!err) {
+            console.log("RES: ", res);
+            if (res.upcoming_event_count > 0) {
+               loadConcerts();
+            } else handleNoConcerts();
+         } //FIXME HANDLE ERR
+      }, null);
+   }
+
+   function loadConcerts() {
+      var query = BANDSINTOWN.ALL_EVENTS.replace("ARTIST", PAGE_ARTIST.name.replace(/\s/g, '%20'));
+      var concertsUrl = CORS_BYPASS + encodeURIComponent(BANDSINTOWN.BASE + query);
+
+      new Ajax('GET', concertsUrl, function(err, res) {
+         if (!err) {
+            console.log("CONCERTS: ", res);
+            buildConcertsView(res);
+         } //FIXME HANDLE ERR
+      }, null);
+
+   }
+
+   function buildConcertsView(concerts) {
+      var concertList = document.createElement('ul');
+         concertList.className = "concert-list";
+      for (var c = 0; c < concerts.length; c++) {
+         createConcert(concerts[c]);
+      }
+      console.log("section seeit: ", SECTION.SEE_IT);
+      SECTION.SEE_IT.querySelector('.seeit-inner').appendChild(concertList);
+      function createConcert(concert) {
+         console.log("concert: ", concert);
+         var concertItem = document.createElement('li');
+            concertItem.className = "concert-item";
+            var title = document.createElement('h3');
+               title.className = "concert-title item-inner";
+               title.innerHTML = concert.formatted_location;
+            var datetime = document.createElement('h3');
+               datetime.className = "concert-datetime item-inner";
+               datetime.innerHTML = concert.formatted_datetime;
+            var seemore = document.createElement('div');
+               var seemoreText = document.createElement('h4');
+                  seemoreText.className = "text";
+
+               if (concert.ticket_status === "available") {
+                  seemore.className = "seemore item-inner tix-true";
+                  seemoreText.innerHTML = "Tickets Available";
+               } else {
+                  seemore.className = "seemore item-inner tix-false";
+                  seemoreText.innerHTML = "Tickets Unavailable";
+               }
+
+               seemore.appendChild(seemoreText);
+               seemore.addEventListener('click', function(e) {
+                  showConcertInfo(concert);
+               });
+               seemore.addEventListener('mouseenter', function(e) {
+                  e.target.classList.add('flip');
+               });
+               seemore.addEventListener('mouseleave', function(e) {
+                  e.target.classList.remove('flip');
+               });
+
+
+         concertItem.appendChild(title);
+         concertItem.appendChild(datetime);
+         concertItem.appendChild(seemore);
+
+         concertList.appendChild(concertItem);
+      }
+
+   }
+
+   function handleNoConcerts() {
+      //show facebook page?
+      //show other info??
+   }
+
+   function showConcertInfo(concert) {
+      //console.log("OPEN MODAL HERE MOFOS");
+      var concertInfo = document.createElement('div');
+            concertInfo.className = "concert-info";
+         var title = document.createElement('div');
+            title.className = 'title';
+            title.innerHTML = "<h2>"+concert.title+"</h2>";
+         var date = document.createElement('div');
+            date.className = 'date';
+            date.innerHTML = "<p>"+concert.formatted_datetime+"</p>";
+         if (concert.description) {
+            var description = document.createElement('div');
+               description.className = 'description';
+               description.innerHTML = "<p>Event Description: "+concert.description+"</p>";
+         }
+         var venue = document.createElement('div');
+            venue.className = 'venue';
+            // venue.
+            //h4 venue name : Venue
+            //p venue place : Place
+            //p city/region(st) : Location (concat city + ", " + region)
+            var venueName = document.createElement('p');
+               venueName.className = "venue-detail";
+               venueName.innerHTML = "Venue: "+concert.venue.name;
+            var venuePlace = document.createElement('p');
+               venuePlace.className = "venue-detail";
+               venuePlace.innerHTML = "Place: "+concert.venue.place;
+            var venueLoc = document.createElement('p');
+               venueLoc.className = "venue-detail";
+               venueLoc.innerHTML = "Location: " + concert.venue.city + ", " + concert.venue.region;
+
+         venue.appendChild(venueName);
+         venue.appendChild(venuePlace);
+         venue.appendChild(venueLoc);
+
+
+         var tixLink = document.createElement('a');
+            tixLink.target = "_blank";
+            var tickets = document.createElement('div');
+               tickets.className = 'tickets';
+            if (concert.ticket_status === 'available') {
+               tixLink.href = concert.ticket_url;
+               tickets.innerHTML = "Buy Tickets";
+               tickets.classList.add('tix-true');
+            } else {
+               tickets.innerHTML = "Tickets Unavailable";
+               tickets.classList.add('tix-false');
+               tixLink.href = "javascript: void(0)";
+               tixLink.style.pointerEvents = "none"; //disable link
+            }
+         tixLink.appendChild(tickets);
+
+         var share = document.createElement('a');
+            share.target = "_blank";
+            share.href = concert.facebook_rsvp_url; //goes to bands in town, not facebook
+            var shareIcon = document.createElement('div');
+               shareIcon.className = 'fa fa-share share';
+         share.appendChild(shareIcon);
+
+
+      concertInfo.appendChild(title);
+      concertInfo.appendChild(date);
+      if (concert.description) concertInfo.appendChild(description);
+      concertInfo.appendChild(venue);
+      concertInfo.appendChild(tixLink);
+      concertInfo.appendChild(share);
+
+
+      var modal = new Modal(concertInfo).show();
+   }
+
+
+
+
+
+   function handleSpotifyPlayerChange(e) {
+      document.querySelector('iframe').src = "https://embed.spotify.com/?uri="+e.target.uri;
+      //scrolls to player on click of song
+      scrollToPlayerTop();
+   }
+
+   function scrollToPlayerTop() {
+      document.body.scrollTop = TOP_OF_SPOTIFY_EMBED;
+   }
+
+   var wheelItems = document.querySelectorAll('.wheel-item');
+   var navItems = document.querySelectorAll('.content-wheel .navigation .list .item');
+   handleWheelNavigation();
+   function handleWheelNavigation() {
+      for (var i = 0; i < navItems.length; i++) {
+         navItems[i].addEventListener('click', function(e) {
+            if (!e.target.classList.contains('active')) {
+               for (var j = 0; j < wheelItems.length; j++) {
+                  if (wheelItems[j].classList.contains('active')) {
+                     wheelItems[j].classList.remove('active');
+                     navItems[j].classList.remove('active');
+                  }
+               }
+               console.log("e.target.for:", e.target.attributes.isFor.value);
+               var val = e.target.attributes.isFor.value;
+               var box = document.getElementById("wheel-"+val);
+                  box.className += " " + 'active fade';
+                  setTimeout(function() {
+                     box.classList.remove('fade');
+                  }, 10);
+               e.target.className += " " + 'active fade';
+                  setTimeout(function() {
+                     e.target.classList.remove('fade');
+                  }, 10);
+            }
+         });
+      }
+   }
+
+   var header = document.querySelector('header');
+   window.addEventListener('scroll', function() {
+      if (window.scrollY > 50) {
+         if (!header.classList.contains('darken'))
+            header.className += " darken";
+      } else header.classList.remove('darken');
+   });
+
+
+})();
+
+
+
+
+
+
+
+
+
+
+// 'use strict';
+//
+//
+// (function() {
+//
+//
+//    var user = new User();
+//
+//
+//    //page sections
+//    var SECTION = {
+//       hearit: document.getElementById("hearit"), //music
+//       seeit: document.getElementById("seeit"), //concerts
+//       singit: document.getElementById('singit'), //lyrics
+//       discoverit: document.getElementById('discoverit') //similar artists
+//    }
+//
+//    // console.log("User: ", user.fetchLocal);
+//    var GlobalArtist = {
+//       spotify: {
+//          request: new Ajax().request,
+//          id: user.fetchLocal('currentArtist'),
+//          albums: [],
+//          songs: []
+//       },
+//       bandsInTown: {
+//          request: new Ajax().request,
+//          id: null
+//       },
+//       musixMatch: {
+//          request: new Ajax().request,
+//          id: null
+//       }
+//    }
+//
+//    // init();
+//    function init() {
+//       console.log("GlobalArtist ID: ", GlobalArtist.spotify.id);
+//       loadSpotify();
+//    }
+//
+//
+//    function loadArtistName() {
+//       var pageTitle = document.getElementById('page-title-artist-name');
+//          pageTitle.innerHTML = GlobalArtist.spotify.request.apiData.name;
+//    }
+//
+//
+//    function loadSpotify() {
+//       //load artist from spotify and load iframe with top 10
+//       var spotify = GlobalArtist.spotify.request;
+//       var aId = GlobalArtist.spotify.id;
+//       spotify.open('GET', "https://api.spotify.com/v1/artists/"+aId);
+//       spotify.send();
+//       spotify.onload = function() {
+//          console.log("ARTIST: ", this);
+//          loadArtistName();
+//          loadSpotifyIFrame(this.apiData.uri);
+//
+//          /**FIXME:*/
+//          //loadArtistInfo();
+//
+//          //load the albums
+//          loadAlbums();
+//       }
+//       function loadAlbums() {
+//          var type = "album_type=album,single";
+//          var limit = "&limit=50";
+//          var albums = GlobalArtist.spotify.request; //new request object
+//          albums.open('GET', "https://api.spotify.com/v1/artists/"+aId+"/albums?"+type+limit);
+//          albums.send();
+//          albums.onload = function() {
+//             // console.log("ALBUMS: ", this);
+//             var albumsSection = SECTION.hearit.querySelector('#wheel-albums');
+//             var albums = this.apiData.items;
+//             GlobalArtist.spotify.albums.push(albums);
+//             //load and append albums
+//             for (var album = 0; album < albums.length; album++) {
+//                appendToList(albums[album], albumsSection);
+//             }
+//
+//             //call initial load songs
+//             loadSongs(albums);
+//
+//          }
+//       }
+//
+//       /**
+//       *
+//       * @param {type}
+//       * @return {type}
+//       */
+//       var albumTracks = [];
+//       function loadSongs(albumsArray) {
+//          //takes an array of albums and
+//          //recursively waits to load the next album's songs
+//
+//          //grab current album and remove
+//          var currAlbum = albumsArray.shift();
+//
+//          //request songs from current album
+//          var tracks = GlobalArtist.spotify.request; //new request object
+//          tracks.open('GET', "https://api.spotify.com/v1/albums/"+currAlbum.id+"/tracks");
+//          tracks.send();
+//          tracks.onload = function() {
+//             // console.log("loaded: ", this.readyState);
+//             //once the song is loaded, check if any albums are left,
+//             //if there are remaining albums, load next albums songs
+//             if (albumsArray.length > 0) {
+//                // console.log("albumsArray: ", albumsArray);
+//                albumTracks.push(this.apiData.items);
+//                loadSongs(albumsArray);
+//                return;
+//             }
+//             //done with recursive song fetch
+//
+//             var tracksSection = SECTION.hearit.querySelector('#wheel-tracks');
+//
+//             //albumTracks = [array of tracks]
+//             //albumTracks is array of arrays of albums
+//             for (var album in albumTracks) {
+//                var currAlbum = albumTracks[album];
+//                for (var track = 0; track < currAlbum.length; track++) {
+//                   appendToList(currAlbum[track], tracksSection);
+//                }
+//             }
+//
+//          }
+//
+//          // console.log("TRACKS: ", albumTracks);
+//          //
+//          // console.log("albums: ",albumsArray);
+//       }
+//
+//       // var albums = [];
+//       function appendToList(item, parent) {
+//          // console.log("item: ", item, parent);
+//          var child = document.createElement('div');
+//             child.className = item.type + "-list-item";
+//             // child.innerHTML = item.name;
+//             child.style.overflow = 'hidden';
+//             // child.style.fontSize = '12px';
+//             var text = document.createElement('h3');
+//                text.className = 'name';
+//                //display singles & compilation albums
+//                if (item.type === 'album') {
+//                   if (item.album_type !== 'album') {
+//                      text.innerHTML = item.name + " (" + item.type + ")";
+//                   }
+//                   text.innerHTML = item.name;
+//                } else {
+//                   text.innerHTML = item.name;
+//                }
+//
+//                if (item.type !== 'track') { //is not a song
+//                   if (item.images.length > 0) {
+//                      var img = document.createElement('img');
+//                         img.className = 'thumbnail';
+//                         img.src = item.images[0].url;
+//                         img.alt = item.name;
+//                         img.height = "40";
+//                         img.width = "40";
+//                      child.appendChild(img);
+//                   }
+//                }
+//
+//          //make icon to play
+//          var play = document.createElement('i');
+//             play.className = "fa fa-play-circle-o play-item " + item.type;
+//             // play.id = "spotify:track"+item.id;
+//             // console.log("item: ", item);
+//             play.uri = item.uri;
+//             play.addEventListener('click', handleSpotifyPlayerChange);
+//
+//
+//          child.appendChild(text);
+//          child.appendChild(play);
+//          parent.appendChild(child);
+//       }
+//    }
+//
+//    function loadSpotifyIFrame(uri) {
+//       var iframeBox = document.querySelector('.iframe-box.spotify-embed');
+//
+//       var iframe = document.createElement('iframe');
+//          iframe.src = "https://embed.spotify.com/?uri="+uri;
+//          iframe.width = "100%";
+//          iframe.height = "100%";
+//          iframe.frameborder = "0"
+//          iframe.style.border = "none";
+//          iframe.allowtransparency = "true";
+//       //load elements
+//       iframeBox.appendChild(iframe);
+//    }
+//
+//    function handleSpotifyPlayerChange(e) {
+//       document.querySelector('iframe').src = "https://embed.spotify.com/?uri="+e.target.uri;
+//       //scrolls to player on click of song
+//       scrollToPlayerTop()
+//    }
+//    function scrollToPlayerTop() {
+//       document.body.scrollTop = 645;
+//    }
+//
+//
+//    var wheelItems = document.querySelectorAll('.wheel-item');
+//    var navItems = document.querySelectorAll('.content-wheel .navigation .list .item');
+//    handleWheelNavigation();
+//    function handleWheelNavigation() {
+//       for (var i = 0; i < navItems.length; i++) {
+//          navItems[i].addEventListener('click', function(e) {
+//             if (!e.target.classList.contains('active')) {
+//                for (var j = 0; j < wheelItems.length; j++) {
+//                   if (wheelItems[j].classList.contains('active')) {
+//                      wheelItems[j].classList.remove('active');
+//                      navItems[j].classList.remove('active');
+//                   }
+//                }
+//                console.log("e.target.for:", e.target.attributes.isFor.value);
+//                var val = e.target.attributes.isFor.value;
+//                var box = document.getElementById("wheel-"+val);
+//                   box.className += " " + 'active fade';
+//                   setTimeout(function() {
+//                      box.classList.remove('fade');
+//                   }, 10);
+//                e.target.className += " " + 'active fade';
+//                   setTimeout(function() {
+//                      e.target.classList.remove('fade');
+//                   }, 10);
+//             }
+//          });
+//       }
+//    }
+//
+//
+//
+//
+//
+//
+// })();

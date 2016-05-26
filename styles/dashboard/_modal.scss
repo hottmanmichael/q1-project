@@ -44,3 +44,10 @@
    color: #000;
    padding: 15px; //transitions to 25px
 }
+#close-modal {
+   position: absolute;
+   right: 10px;
+   top: 10px;
+   font-size: 1.3em;
+   cursor: pointer;
+}

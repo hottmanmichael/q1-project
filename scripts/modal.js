@@ -17,6 +17,7 @@ Modal.prototype.show = function () {
       this.portal.appendChild(backdrop);
       document.body.insertBefore(this.portal, document.body.children[0]);
       this.render();
+      stopBodyScroll(); //from menu.js
    }
 };
 
@@ -24,11 +25,15 @@ Modal.prototype.show = function () {
 Modal.prototype.render = function () {
    var that = this;
    setTimeout(function(){
-      // that.portal.classList.add('fade');
       that.portal.classList.add('in');
    }, 10);
    var inner = document.createElement('div');
       inner.className = "modal-inner";
+   var closeModal = document.createElement('div');
+      closeModal.id = 'close-modal';
+      closeModal.className = 'fa fa-times';
+      // closeModal.style.postition = absolute;
+   inner.appendChild(closeModal);
    inner.appendChild(this.child);
    this.portal.children[0].appendChild(inner);
 };
@@ -38,7 +43,7 @@ Modal.prototype.settleOnMount = function () {
 };
 
 Modal.prototype.hide = function (e) {
-   if (e.target.className === 'modal-backdrop') {
+   if (e.target.className === 'modal-backdrop' || e.target.id === 'close-modal') {
       this.unmount();
    }
 };
@@ -46,7 +51,9 @@ Modal.prototype.hide = function (e) {
 Modal.prototype.unmount = function () {
    document.body.removeChild(this.portal);
    this.portal = false;
+   resumeBodyScroll(); //from menu.js
 };
+
 
 
 

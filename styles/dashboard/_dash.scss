@@ -308,20 +308,31 @@ $tix-false-color: #EF5350;
    }
 }
 
+//inner modal
 .concert-info {
    a {
       text-decoration: none;
       color: black;
    }
-
    .title {
       font-size: 1em;
    }
-   .date {
-
-   }
-   .description {
-
+   // .date {
+   //
+   // }
+   // .description {
+   //
+   // }
+   .venue {
+      width: 100%;
+      height: auto;
+      border-top: solid 1px;
+      border-bottom: solid 1px;
+      margin-bottom: 15px;
+      .venue-detail {
+         margin: 15px;
+         margin-left: 0;
+      }
    }
    .tickets {
       height: 50px;
@@ -337,11 +348,12 @@ $tix-false-color: #EF5350;
          background-color: $tix-false-color;
       }
    }
-   .facebook-logo {
-      float: left;
+   .share {
       height: 50px;
       width: 50px;
-      position: absolute;;
+      position: absolute;
       right: 5%;
+      font-size: 2.2em;
+      padding: 9px;
    }
 }

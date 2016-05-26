@@ -21,7 +21,7 @@
       ARTIST: "ARTIST.json?api_version=2.0"+BANDSINTOWN_ID,
       ALL_EVENTS: "ARTIST/events.json?api_version=2.0"+BANDSINTOWN_ID
    }
-   var CORS_BYPASS = "http://jsonp.afeld.me/?url=";
+   var CORS_BYPASS = "https://jsonp.afeld.me/?url=";
 
 
    //initialize user
@@ -340,13 +340,6 @@
    }
 
    function loadConcerts() {
-      // console.log("concerts available to load");
-
-      // var BANDSINTOWN = {
-      //    BASE: "http://api.bandsintown.com/artists/",
-      //    ARTIST: "ARTIST.json?api_version=2.0"+BANDSINTOWN_ID,
-      //    ALL_EVENTS: "ARTIST/events.json?api_version=2.0"+BANDSINTOWN_ID
-      // }
       var query = BANDSINTOWN.ALL_EVENTS.replace("ARTIST", PAGE_ARTIST.name.replace(/\s/g, '%20'));
       var concertsUrl = CORS_BYPASS + encodeURIComponent(BANDSINTOWN.BASE + query);
 
@@ -430,6 +423,27 @@
                description.className = 'description';
                description.innerHTML = "<p>Event Description: "+concert.description+"</p>";
          }
+         var venue = document.createElement('div');
+            venue.className = 'venue';
+            // venue.
+            //h4 venue name : Venue
+            //p venue place : Place
+            //p city/region(st) : Location (concat city + ", " + region)
+            var venueName = document.createElement('p');
+               venueName.className = "venue-detail";
+               venueName.innerHTML = "Venue: "+concert.venue.name;
+            var venuePlace = document.createElement('p');
+               venuePlace.className = "venue-detail";
+               venuePlace.innerHTML = "Place: "+concert.venue.place;
+            var venueLoc = document.createElement('p');
+               venueLoc.className = "venue-detail";
+               venueLoc.innerHTML = "Location: " + concert.venue.city + ", " + concert.venue.region;
+
+         venue.appendChild(venueName);
+         venue.appendChild(venuePlace);
+         venue.appendChild(venueLoc);
+
+
          var tixLink = document.createElement('a');
             tixLink.target = "_blank";
             var tickets = document.createElement('div');
@@ -441,34 +455,25 @@
             } else {
                tickets.innerHTML = "Tickets Unavailable";
                tickets.classList.add('tix-false');
-               tixLink.href = "#";
+               tixLink.href = "javascript: void(0)";
+               tixLink.style.pointerEvents = "none"; //disable link
             }
          tixLink.appendChild(tickets);
 
-         var fbLink = document.createElement('a');
-            fbLink.target = "_blank";
-            fbLink.href = concert.facebook_rsvp_url;
-            var fb = document.createElement('img');
-               fb.className = 'facebook-logo';
-               fb.src = "../assets/FB-f-Logo__blue_1024.png";
-         fbLink.appendChild(fb);
-            // if (concert.ticket_status === 'available') {
-            //    tixLink.href = concert.ticket_url;
-            //    tickets.innerHTML = "Buy Tickets";
-            //    tickets.classList.add('tix-true');
-            // } else {
-            //    tickets.innerHTML = "Tickets Unavailable";
-            //    tickets.classList.add('tix-false');
-            //    tixLink.href = "#";
-            // }
+         var share = document.createElement('a');
+            share.target = "_blank";
+            share.href = concert.facebook_rsvp_url; //goes to bands in town, not facebook
+            var shareIcon = document.createElement('div');
+               shareIcon.className = 'fa fa-share share';
+         share.appendChild(shareIcon);
 
 
       concertInfo.appendChild(title);
       concertInfo.appendChild(date);
       if (concert.description) concertInfo.appendChild(description);
+      concertInfo.appendChild(venue);
       concertInfo.appendChild(tixLink);
-      concertInfo.appendChild(fbLink);
-
+      concertInfo.appendChild(share);
 
 
       var modal = new Modal(concertInfo).show();
@@ -524,7 +529,6 @@
             header.className += " darken";
       } else header.classList.remove('darken');
    });
-
 
 
 })();

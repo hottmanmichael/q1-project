@@ -1,1 +1,2 @@
-var menuButton=document.getElementById("");
+
+var menuButton = document.getElementById('');
