@@ -274,6 +274,9 @@ $tix-false-color: #EF5350;
 
 #seeit { //concerts
    padding: 50px;
+   @include mobile {
+      padding: 10px;
+   }
    .seeit-inner {
       border: solid 1px black;
       height: 100%;
@@ -305,6 +308,7 @@ $tix-false-color: #EF5350;
       }
       .concert-title {
          width: 30%;
+         font-size: 1.3em;
       }
       .concert-datetime {
          width: 40%;
@@ -331,14 +335,14 @@ $tix-false-color: #EF5350;
       }
       @include mobile {
          .concert-title {
-            width: 60%;
+            width: 55%;
             font-size: 0.9em;
          }
          .concert-datetime {
             display: none;
          }
          .seemore {
-            width: 40%;
+            width: 45%;
             font-size: 0.9em;
             padding: 5px;
             .text {
