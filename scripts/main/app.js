@@ -52,9 +52,9 @@
          FIXME: handle 400 error!
       */
       new Ajax('GET', fullPath, function(err, res) {
-         console.log("err: ", err);
+         // console.log("err: ", err);
          if (!err) {
-            console.log("SPOTIFY: ", res);
+            // console.log("SPOTIFY: ", res);
                removeCurrentDigestArtists();
                showArtists(res);
          } else handleResponseError(err);
@@ -62,7 +62,7 @@
    }
 
    function showArtists(data) {
-      console.log("DATA: ", data);
+      // console.log("DATA: ", data);
       if (data.artists.items.length > 0) {
          for (var artist = 0; artist < data.artists.items.length; artist++) {
             addArtistToDigest(data.artists.items[artist]);
@@ -122,7 +122,7 @@
          //is child
          target = e.target.parentElement;
       } else target = e.target;
-      console.log("has artist: ", target.hasArtist);
+      // console.log("has artist: ", target.hasArtist);
       if (!target.hasArtist) return; //if no artist, do not route
 
       // console.log("id: ", target.id);

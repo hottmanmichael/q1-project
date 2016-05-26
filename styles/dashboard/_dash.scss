@@ -243,10 +243,12 @@ $tix-true-color: #66BB6A;
 $tix-false-color: #EF5350;
 
 #seeit { //concerts
+   padding: 50px;
    .seeit-inner {
       border: solid 1px black;
       height: 100%;
       overflow: scroll;
+      padding: 5px;
    }
    .concert-list {
       padding: 0;
@@ -255,9 +257,9 @@ $tix-false-color: #EF5350;
    .concert-item {
       width: 100%;
       height: 40px;
-      margin: 5px;
+      margin-top: 5px;
+      margin-bottom: 5px;
       border-radius: 2px;
-      border: solid 1px black;
       background-color: #F5F5F5;
       color: black;
       .item-inner {

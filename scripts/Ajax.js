@@ -15,7 +15,7 @@ var Ajax = function(method, url, callback, data, needsCORS) {
             callback(null, JSON.parse(this.responseText));
          } else {
             console.error("Error in Ajax " + method + " request: " + this);
-            console.log("THIS: ", this);
+            // console.log("THIS: ", this);
             callback({
                message: JSON.parse(this.responseText),
                status: this.status,

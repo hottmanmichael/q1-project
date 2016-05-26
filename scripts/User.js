@@ -108,10 +108,10 @@ var User = function() {
    };
 
    this.addFavorite = function(artist, callback) {
-      console.log("type of artist (object): ", typeof artist);
-      console.log("artist: ", artist);
+      // console.log("type of artist (object): ", typeof artist);
+      // console.log("artist: ", artist);
       var user = JSON.parse(localStorage.getItem(MODEL));
-      console.log("user: ", user.artists);
+      // console.log("user: ", user.artists);
       //FIXME: DON"T ADD IF ALREADY EXISTS! THROW ERROR!
       for (var a = 0; a < user.artists.length; a++) {
          if (user.artists[a].id === artist.id) {

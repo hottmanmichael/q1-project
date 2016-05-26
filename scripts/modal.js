@@ -3,7 +3,7 @@
 var Modal = function(child) {
    this.child = child;
    this.portal = false;
-   console.log("modal: ", this.portal);
+   // console.log("modal: ", this.portal);
 };
 
 

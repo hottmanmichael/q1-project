@@ -37,14 +37,14 @@
    user.establish(user.fetchLocal('MODEL'));
 
 
-   console.log("user on page load and setup: ", user);
+   // console.log("user on page load and setup: ", user);
 
 
    //setup the artist
    var artistFromStorage = user.fetchLocal('CURRENT_ARTIST');
 
    //fallback if fail on local storage
-   console.log("artistFromStorage: ", artistFromStorage)
+   // console.log("artistFromStorage: ", artistFromStorage)
    // if (!artistFromStorage) {}
 
    //to give artist methods
@@ -54,7 +54,7 @@
       artistFromStorage.slug
    );
 
-   console.log("PAGE_ARTIST: ", PAGE_ARTIST);
+   // console.log("PAGE_ARTIST: ", PAGE_ARTIST);
 
 
    init();
@@ -203,15 +203,15 @@
 
    function loadInformation() {
       //ajax to google knowledge graph
-      console.log("PAGE_ARTIST: ", PAGE_ARTIST);
+      // console.log("PAGE_ARTIST: ", PAGE_ARTIST);
       var query = PAGE_ARTIST.name
          .replace(/(\W+)/g, '+') //replace non-words plus extra whitespace with "+"
          .toLowerCase();
       var url = GOOGLE_BASE_URL.replace('ARTIST', query);
-      console.log("query: ", query)
+      // console.log("query: ", query)
       new Ajax('GET', url, function(err, res) {
          if (!err) {
-            console.log("Artist Info: ", res.itemListElement[0].result);
+            // console.log("Artist Info: ", res.itemListElement[0].result);
             buildInfoSection(res.itemListElement[0].result);
          }
       }, null);
@@ -331,7 +331,7 @@
 
       new Ajax('GET', bitUrl, function(err, res) {
          if (!err) {
-            console.log("RES: ", res);
+            // console.log("RES: ", res);
             if (res.upcoming_event_count > 0) {
                loadConcerts();
             } else handleNoConcerts();
@@ -345,7 +345,7 @@
 
       new Ajax('GET', concertsUrl, function(err, res) {
          if (!err) {
-            console.log("CONCERTS: ", res);
+            // console.log("CONCERTS: ", res);
             buildConcertsView(res);
          } //FIXME HANDLE ERR
       }, null);
@@ -358,10 +358,10 @@
       for (var c = 0; c < concerts.length; c++) {
          createConcert(concerts[c]);
       }
-      console.log("section seeit: ", SECTION.SEE_IT);
+      // console.log("section seeit: ", SECTION.SEE_IT);
       SECTION.SEE_IT.querySelector('.seeit-inner').appendChild(concertList);
       function createConcert(concert) {
-         console.log("concert: ", concert);
+         // console.log("concert: ", concert);
          var concertItem = document.createElement('li');
             concertItem.className = "concert-item";
             var title = document.createElement('h3');
@@ -506,7 +506,7 @@
                      navItems[j].classList.remove('active');
                   }
                }
-               console.log("e.target.for:", e.target.attributes.isFor.value);
+               // console.log("e.target.for:", e.target.attributes.isFor.value);
                var val = e.target.attributes.isFor.value;
                var box = document.getElementById("wheel-"+val);
                   box.className += " " + 'active fade';
