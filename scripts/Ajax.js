@@ -5,7 +5,7 @@ var post = 'POST';
 var get = 'GET';
 
 
-var Ajax = function(method, url, callback, data) {
+var Ajax = function(method, url, callback, data, needsCORS) {
    this.request = new XMLHttpRequest();
    this.request.onreadystatechange = handleRequest;
    function handleRequest() {
@@ -15,6 +15,7 @@ var Ajax = function(method, url, callback, data) {
             callback(null, JSON.parse(this.responseText));
          } else {
             console.error("Error in Ajax " + method + " request: " + this);
+            console.log("THIS: ", this);
             callback({
                message: JSON.parse(this.responseText),
                status: this.status,

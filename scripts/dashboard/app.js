@@ -13,7 +13,16 @@
    var TOP_OF_SPOTIFY_EMBED = 590;
 
    var GOOGLE_BASE_URL = "https://kgsearch.googleapis.com/v1/entities:search?query=ARTIST&key=AIzaSyAUrXU5tUMx8z9kuUq_uYKro-IHsTigorY&limit=5&indent=True&types=MusicGroup";
-   var BANDSINTOWN_BASE_URL = "http://api.bandsintown.com/artists/ARTIST/events.json?api_version=2.0&app_id=Groupie";
+   // var BANDSINTOWN_BASE_URL = "http://api.bandsintown.com/artists/ARTIST/events.json?api_version=2.0&app_id=Groupie";
+   // var BANDSINTOWN_BASE_URL_CHECK = "http://api.bandsintown.com/artists/ARTIST.json?api_version=2.0&app_id=YOUR_APP_ID"
+   var BANDSINTOWN_ID = "&app_id=Groupie";
+   var BANDSINTOWN = {
+      BASE: "http://api.bandsintown.com/artists/",
+      ARTIST: "ARTIST.json?api_version=2.0"+BANDSINTOWN_ID,
+      ALL_EVENTS: "ARTIST/events.json?api_version=2.0"+BANDSINTOWN_ID
+   }
+   var CORS_BYPASS = "http://jsonp.afeld.me/?url=";
+
 
    //initialize user
    var user = new User();
@@ -55,8 +64,8 @@
          loadSpotify();
       //google knowledge graph
          loadInformation();
-      //bands in town
-         // loadConcerts();
+      //bands in town concerts
+         checkArtistConcerts();
       //load something else??
    }
 
@@ -79,8 +88,7 @@
             * add to user artists array if it doesn't already exist
             * handle CACHE ?? CAN ALSO DO IN AJAX.JS??
          **/
-
-      }, null);
+      }, null, true); //true === needs CORS
 
       function loadIframe(uri) {
          var iframeBox = document.querySelector('.iframe-box.spotify-embed');
@@ -110,7 +118,7 @@
                }
                //load songs from albums
                /**FIXME: UNCOMMENT BELOW */
-               // loadSongs(res.items);
+               loadSongs(res.items);
 
             }, null
          );
@@ -278,7 +286,6 @@
 
             if (hipsterTally === 5) {
                description.innerHTML = "This band is so hipster, you heard about them before Google did...";
-
             }
 
          topic.appendChild(title);
@@ -309,8 +316,6 @@
                   }
                }
 
-
-
          section.appendChild(topic);
          section.appendChild(imgBox);
       }
@@ -318,11 +323,165 @@
 
 
 
+   //Bands in Town Concerts
+
+   function checkArtistConcerts() {
+      var query = BANDSINTOWN.ARTIST.replace("ARTIST", PAGE_ARTIST.name.replace(/\s/g, '%20'));
+      var bitUrl = CORS_BYPASS + encodeURIComponent(BANDSINTOWN.BASE + query);
+
+      new Ajax('GET', bitUrl, function(err, res) {
+         if (!err) {
+            console.log("RES: ", res);
+            if (res.upcoming_event_count > 0) {
+               loadConcerts();
+            } else handleNoConcerts();
+         } //FIXME HANDLE ERR
+      }, null);
+   }
+
+   function loadConcerts() {
+      // console.log("concerts available to load");
+
+      // var BANDSINTOWN = {
+      //    BASE: "http://api.bandsintown.com/artists/",
+      //    ARTIST: "ARTIST.json?api_version=2.0"+BANDSINTOWN_ID,
+      //    ALL_EVENTS: "ARTIST/events.json?api_version=2.0"+BANDSINTOWN_ID
+      // }
+      var query = BANDSINTOWN.ALL_EVENTS.replace("ARTIST", PAGE_ARTIST.name.replace(/\s/g, '%20'));
+      var concertsUrl = CORS_BYPASS + encodeURIComponent(BANDSINTOWN.BASE + query);
+
+      new Ajax('GET', concertsUrl, function(err, res) {
+         if (!err) {
+            console.log("CONCERTS: ", res);
+            buildConcertsView(res);
+         } //FIXME HANDLE ERR
+      }, null);
+
+   }
+
+   function buildConcertsView(concerts) {
+      var concertList = document.createElement('ul');
+         concertList.className = "concert-list";
+      for (var c = 0; c < concerts.length; c++) {
+         createConcert(concerts[c]);
+      }
+      console.log("section seeit: ", SECTION.SEE_IT);
+      SECTION.SEE_IT.querySelector('.seeit-inner').appendChild(concertList);
+      function createConcert(concert) {
+         console.log("concert: ", concert);
+         var concertItem = document.createElement('li');
+            concertItem.className = "concert-item";
+            var title = document.createElement('h3');
+               title.className = "concert-title item-inner";
+               title.innerHTML = concert.formatted_location;
+            var datetime = document.createElement('h3');
+               datetime.className = "concert-datetime item-inner";
+               datetime.innerHTML = concert.formatted_datetime;
+            var seemore = document.createElement('div');
+               var seemoreText = document.createElement('h4');
+                  seemoreText.className = "text";
+
+               if (concert.ticket_status === "available") {
+                  seemore.className = "seemore item-inner tix-true";
+                  seemoreText.innerHTML = "Tickets Available";
+               } else {
+                  seemore.className = "seemore item-inner tix-false";
+                  seemoreText.innerHTML = "Tickets Unavailable";
+               }
+
+               seemore.appendChild(seemoreText);
+               seemore.addEventListener('click', function(e) {
+                  showConcertInfo(concert);
+               });
+               seemore.addEventListener('mouseenter', function(e) {
+                  e.target.classList.add('flip');
+               });
+               seemore.addEventListener('mouseleave', function(e) {
+                  e.target.classList.remove('flip');
+               });
+
+
+         concertItem.appendChild(title);
+         concertItem.appendChild(datetime);
+         concertItem.appendChild(seemore);
+
+         concertList.appendChild(concertItem);
+      }
+
+   }
+
+   function handleNoConcerts() {
+      //show facebook page?
+      //show other info??
+   }
+
+   function showConcertInfo(concert) {
+      //console.log("OPEN MODAL HERE MOFOS");
+      var concertInfo = document.createElement('div');
+            concertInfo.className = "concert-info";
+         var title = document.createElement('div');
+            title.className = 'title';
+            title.innerHTML = "<h2>"+concert.title+"</h2>";
+         var date = document.createElement('div');
+            date.className = 'date';
+            date.innerHTML = "<p>"+concert.formatted_datetime+"</p>";
+         if (concert.description) {
+            var description = document.createElement('div');
+               description.className = 'description';
+               description.innerHTML = "<p>Event Description: "+concert.description+"</p>";
+         }
+         var tixLink = document.createElement('a');
+            tixLink.target = "_blank";
+            var tickets = document.createElement('div');
+               tickets.className = 'tickets';
+            if (concert.ticket_status === 'available') {
+               tixLink.href = concert.ticket_url;
+               tickets.innerHTML = "Buy Tickets";
+               tickets.classList.add('tix-true');
+            } else {
+               tickets.innerHTML = "Tickets Unavailable";
+               tickets.classList.add('tix-false');
+               tixLink.href = "#";
+            }
+         tixLink.appendChild(tickets);
+
+         var fbLink = document.createElement('a');
+            fbLink.target = "_blank";
+            fbLink.href = concert.facebook_rsvp_url;
+            var fb = document.createElement('img');
+               fb.className = 'facebook-logo';
+               fb.src = "../assets/FB-f-Logo__blue_1024.png";
+         fbLink.appendChild(fb);
+            // if (concert.ticket_status === 'available') {
+            //    tixLink.href = concert.ticket_url;
+            //    tickets.innerHTML = "Buy Tickets";
+            //    tickets.classList.add('tix-true');
+            // } else {
+            //    tickets.innerHTML = "Tickets Unavailable";
+            //    tickets.classList.add('tix-false');
+            //    tixLink.href = "#";
+            // }
+
+
+      concertInfo.appendChild(title);
+      concertInfo.appendChild(date);
+      if (concert.description) concertInfo.appendChild(description);
+      concertInfo.appendChild(tixLink);
+      concertInfo.appendChild(fbLink);
+
+
+
+      var modal = new Modal(concertInfo).show();
+   }
+
+
+
+
 
    function handleSpotifyPlayerChange(e) {
       document.querySelector('iframe').src = "https://embed.spotify.com/?uri="+e.target.uri;
       //scrolls to player on click of song
-      scrollToPlayerTop()
+      scrollToPlayerTop();
    }
 
    function scrollToPlayerTop() {

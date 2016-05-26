@@ -1,5 +1,6 @@
 var gulp = require('gulp');
 var path = require('path');
+
 //css
 var compass = require('gulp-compass'),
    sass = require('gulp-sass'),
@@ -10,6 +11,7 @@ var compass = require('gulp-compass'),
    minifycss  = require('gulp-cssnano'),
    watch = gulp.watch,
    gutil = require('gulp-util');
+
 //js
 var uglify = require('gulp-uglify');
 

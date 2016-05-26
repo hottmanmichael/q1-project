@@ -54,7 +54,7 @@
       new Ajax('GET', fullPath, function(err, res) {
          console.log("err: ", err);
          if (!err) {
-            console.log("res: ", res);
+            console.log("SPOTIFY: ", res);
                removeCurrentDigestArtists();
                showArtists(res);
          } else handleResponseError(err);
